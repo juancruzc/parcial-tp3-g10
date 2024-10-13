@@ -49,8 +49,13 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable("lastScreen") {
-                        FifthScreen()
+                        FifthScreen(navController)
                     }
+
+                    composable("home") {
+                        HomeScreen() // Define tu HomeScreen aquí
+                    }
+
                 }
             }
         }
