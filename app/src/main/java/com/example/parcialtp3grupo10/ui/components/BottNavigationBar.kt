@@ -1,11 +1,11 @@
 package com.example.parcialtp3grupo10.ui.components
 
 //noinspection UsingMaterialAndMaterial3Libraries
+//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
-//noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -38,9 +38,10 @@ fun BottNavigationBar() {
         BottomNavigationItem(
             modifier = Modifier.fillMaxWidth(),
             icon = {
-                Icon(                    modifier = Modifier
-                    .fillMaxWidth()
-                    .size(24.dp),
+                Icon(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .size(24.dp),
                     painter = painterResource(id = R.drawable.explore),
                     contentDescription = "Explore"
                 )
@@ -71,11 +72,11 @@ fun BottNavigationBar() {
                         .fillMaxWidth()
                         .size(25.dp),
                     painter = painterResource(id = R.drawable.favourite),
-                    contentDescription = "Favourites"
+                    contentDescription = "Favorites"
                 )
             },
             modifier = Modifier.padding(),
-            label = { Text("Favourites", maxLines = 1) },
+            label = { Text("Favorites", maxLines = 1) },
             selected = false,
             onClick = { }
         )
