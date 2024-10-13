@@ -1,3 +1,5 @@
+package com.example.parcialtp3grupo10.ui
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -5,10 +7,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import com.example.parcialtp3grupo10.R
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.Header
+import com.example.parcialtp3grupo10.ui.components.FilterBottomSheet
 
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
@@ -63,17 +64,11 @@ fun FindProductsScreen() {
     }
 
     if (showFilters) {
-        FilterBottomSheet(onDismiss = { showFilters = false })
+        FilterBottomSheet(
+            isOpen = showFilters,
+            onDismiss = {showFilters = false},
+        )
     }
-}
-
-@Composable
-fun Header(title: String) {
-    Text(
-        text = title,
-        style = MaterialTheme.typography.headlineMedium,
-        fontWeight = FontWeight.Bold
-    )
 }
 
 @Composable
@@ -186,109 +181,6 @@ fun CategoryItem(name: String, imageRes: Int, backgroundColor: Color) {
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
             )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun FilterBottomSheet(onDismiss: () -> Unit) {
-    var selectedCategories by remember { mutableStateOf(setOf("Eggs")) }
-    var selectedBrands by remember { mutableStateOf(setOf("Cocola")) }
-
-    ModalBottomSheet(
-        onDismissRequest = onDismiss,
-        modifier = Modifier.fillMaxHeight(0.6f),
-        containerColor = Color.White
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(16.dp)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text("Filters", style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold))
-                    IconButton(onClick = onDismiss) {
-                        Icon(Icons.Default.Close, contentDescription = "Close")
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Text("Categories", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
-                Spacer(modifier = Modifier.height(8.dp))
-                FilterCheckboxGroup(
-                    items = listOf("Eggs", "Noodles & Pasta", "Chips & Crisps", "Fast Food"),
-                    selectedItems = selectedCategories,
-                    onItemSelect = { selectedCategories = it }
-                )
-
-                Spacer(modifier = Modifier.height(24.dp))
-
-                Text("Brand", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold))
-                Spacer(modifier = Modifier.height(8.dp))
-                FilterCheckboxGroup(
-                    items = listOf("Individual Collection", "Cocola", "Ifad", "Kazi Farmas"),
-                    selectedItems = selectedBrands,
-                    onItemSelect = { selectedBrands = it }
-                )
-
-                Spacer(modifier = Modifier.height(80.dp)) // Space for the button
-            }
-
-            Button(
-                onClick = { /* TODO: Apply filters */ onDismiss() },
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .height(56.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF53B175))
-            ) {
-                Text("Apply Filter", color = Color.White)
-            }
-        }
-    }
-}
-
-@Composable
-fun FilterCheckboxGroup(
-    items: List<String>,
-    selectedItems: Set<String>,
-    onItemSelect: (Set<String>) -> Unit
-) {
-    Column {
-        items.forEach { item ->
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = item in selectedItems,
-                    onCheckedChange = { checked ->
-                        if (checked) {
-                            onItemSelect(selectedItems + item)
-                        } else {
-                            onItemSelect(selectedItems - item)
-                        }
-                    },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color(0xFF53B175),
-                        uncheckedColor = Color.LightGray
-                    )
-                )
-                Text(item, modifier = Modifier.padding(start = 8.dp))
-            }
         }
     }
 }
