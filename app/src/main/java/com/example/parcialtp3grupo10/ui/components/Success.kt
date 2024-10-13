@@ -1,12 +1,9 @@
 package com.example.parcialtp3grupo10.ui.components
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -27,7 +24,6 @@ import com.example.parcialtp3grupo10.R
 
 @Composable
 fun Success () {
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -47,14 +43,14 @@ fun Success () {
         Text(
             text = "Your Order has been accepted",
             fontWeight = FontWeight.Bold,
-            fontSize = 22.sp,
+            fontSize = 24.sp,
             color = Color.Black
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            text = "Your items have been placed and are on their way to being processed",
+            text = "Your items have been placed and is on it's way to being processed",
             fontSize = 16.sp,
             color = Color.Gray,
             modifier = Modifier.padding(horizontal = 24.dp),
@@ -74,7 +70,6 @@ fun Success () {
         BackButtonBar("Back to home")
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

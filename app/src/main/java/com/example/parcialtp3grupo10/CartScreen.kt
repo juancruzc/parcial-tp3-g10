@@ -99,7 +99,7 @@ fun CartScreen() {
             CheckoutButton(total.toString()) { showOverlay = true }
         }
 
-        if (!showOverlay) {
+        if (showOverlay) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()
