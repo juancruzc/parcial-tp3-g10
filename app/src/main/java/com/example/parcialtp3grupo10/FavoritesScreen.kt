@@ -29,7 +29,7 @@ import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.ButtonBar
 import com.example.parcialtp3grupo10.ui.components.Header
 
-data class DrinkItem(
+data class Item(
     val name: String,
     val volume: String,
     val price: String,
@@ -40,16 +40,16 @@ data class DrinkItem(
 @Composable
 fun FavoritesScreen() {
     val drinks = listOf(
-        DrinkItem("Sprite Can", "325ml", "$1.50", R.drawable.sprite),
-        DrinkItem("Diet Coke", "355ml", "$1.99", R.drawable.diet_coke),
-        DrinkItem("Apple & Grape Juice", "2L", "$15.50", R.drawable.juice),
-        DrinkItem("Coca Cola Can", "325ml", "$4.99", R.drawable.coke),
-        DrinkItem("Pepsi Can", "330ml", "$4.99", R.drawable.pepsi)
+        Item("Sprite Can", "325ml", "$1.50", R.drawable.sprite),
+        Item("Diet Coke", "355ml", "$1.99", R.drawable.diet_coke),
+        Item("Apple & Grape Juice", "2L", "$15.50", R.drawable.juice),
+        Item("Coca Cola Can", "325ml", "$4.99", R.drawable.coke),
+        Item("Pepsi Can", "330ml", "$4.99", R.drawable.pepsi)
     )
 
     Scaffold(
         topBar = {
-            Header("Favorites")
+            Header("Favourites")
         },
         bottomBar = {
             BottNavigationBar()
@@ -95,7 +95,7 @@ fun FavoritesScreen() {
 }
 
 @Composable
-fun DrinkItem(drink: DrinkItem) {
+fun DrinkItem(drink: Item) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
