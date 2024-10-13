@@ -7,12 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -32,43 +30,44 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
+import androidx.compose.ui.unit.sp
 import com.example.parcialtp3grupo10.model.Product
+import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.Header
 import com.example.parcialtp3grupo10.ui.components.ProductCard
 
-@OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
-fun ShopScreen() {
+@OptIn(ExperimentalMaterial3Api::class)
+fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(Color.White),
     ) {
         TopAppBar(
-            modifier = Modifier.zIndex(1f),
             title = {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Header("Shop")
-                    Text(
-                        text = "Dhaka, Banassre",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.Gray,
-                    )
+
                 }
             },
         )
-        Spacer(modifier = Modifier.size(24.dp))
-
+        Text(
+            text = "Dhaka, Banassre",
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color(0xFF4C4F4D),
+            fontSize = 18.sp,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
         LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth().height(710.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
             item {
-                Spacer(modifier = Modifier.size(24.dp))
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -161,6 +160,7 @@ fun ShopScreen() {
                 }
             }
         }
+        BottNavigationBar()
     }
 }
 
@@ -187,13 +187,5 @@ private fun SectionHeader(
                 color = Color(0xFF4CAF50)
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ShopScreenPreview() {
-    MaterialTheme {
-        ShopScreen()
     }
 }
