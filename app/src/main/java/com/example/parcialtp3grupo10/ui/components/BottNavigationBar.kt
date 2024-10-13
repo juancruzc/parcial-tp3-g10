@@ -3,12 +3,12 @@ package com.example.parcialtp3grupo10.ui.components
 //noinspection UsingMaterialAndMaterial3Libraries
 //noinspection UsingMaterialAndMaterial3Libraries
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,18 +20,21 @@ import com.example.parcialtp3grupo10.R
 @Preview
 @Composable
 fun BottNavigationBar() {
-    BottomNavigation(backgroundColor = Color.White) {
+    BottomNavigation(
+        backgroundColor = Color.White,
+        modifier = Modifier.height(85.dp)
+    ) {
         BottomNavigationItem(
             icon = {
                 Icon(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .size(25.dp),
+                        .size(60.dp)
+                        .padding(top = 10.dp),
                     painter = painterResource(id = R.drawable.shop),
                     contentDescription = "Shop"
                 )
             },
-            label = { Text("Shop") },
             selected = false,
             onClick = { }
         )
@@ -41,12 +44,12 @@ fun BottNavigationBar() {
                 Icon(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .size(24.dp),
+                        .size(60.dp)
+                        .padding(top = 14.dp),
                     painter = painterResource(id = R.drawable.explore),
                     contentDescription = "Explore"
                 )
             },
-            label = { Text("Explore") },
             selected = false,
             onClick = { }
         )
@@ -56,12 +59,12 @@ fun BottNavigationBar() {
                 Icon(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .size(25.dp),
+                        .size(60.dp)
+                        .padding(top = 11.dp),
                     painter = painterResource(id = R.drawable.cart),
                     contentDescription = "Explore"
                 )
             },
-            label = { Text("Cart") },
             selected = false,
             onClick = { }
         )
@@ -70,13 +73,13 @@ fun BottNavigationBar() {
                 Icon(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .size(25.dp),
+                        .size(59.dp)
+                        .padding(top = 11.dp),
                     painter = painterResource(id = R.drawable.favourite),
                     contentDescription = "Favorites"
                 )
             },
             modifier = Modifier.padding(),
-            label = { Text("Favorites", maxLines = 1) },
             selected = false,
             onClick = { }
         )
@@ -85,12 +88,12 @@ fun BottNavigationBar() {
                 Icon(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .size(26.dp),
+                        .size(60.dp)
+                        .padding(top = 10.dp),
                     painter = painterResource(id = R.drawable.account),
                     contentDescription = "Account"
                 )
             },
-            label = { Text("Account") },
             selected = false,
             onClick = { }
         )
