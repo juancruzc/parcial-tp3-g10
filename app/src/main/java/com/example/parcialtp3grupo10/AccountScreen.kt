@@ -1,6 +1,8 @@
 package com.example.parcialtp3grupo10
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -9,8 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,31 +30,30 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
-import com.example.parcialtp3grupo10.ui.components.ButtonBar
 import com.example.parcialtp3grupo10.ui.components.Header
 import com.example.parcialtp3grupo10.ui.components.MediumDivider
 
-data class Item(
+data class ListableItem(
     val name: String,
-    val volume: String,
-    val price: String,
     val imageRes: Int
+)
+
+val items = listOf(
+    ListableItem("Orders", R.drawable.orders),
+    ListableItem("My Details", R.drawable.my_details),
+    ListableItem("Delivery Address", R.drawable.address),
+    ListableItem("Payment Methods", R.drawable.payment),
+    ListableItem("Promo Card", R.drawable.promo),
+    ListableItem("Notifications", R.drawable.bell),
+    ListableItem("Help", R.drawable.help),
 )
 
 @Preview
 @Composable
-fun FavoritesScreen() {
-    val drinks = listOf(
-        Item("Sprite Can", "325ml", "$1.50", R.drawable.sprite),
-        Item("Diet Coke", "355ml", "$1.99", R.drawable.diet_coke),
-        Item("Apple & Grape Juice", "2L", "$15.50", R.drawable.juice),
-        Item("Coca Cola Can", "325ml", "$4.99", R.drawable.coke),
-        Item("Pepsi Can", "330ml", "$4.99", R.drawable.pepsi)
-    )
-
+fun AccountScreen() {
     Scaffold(
         topBar = {
-            Header("Favourites")
+            Header("Account ")
         },
         bottomBar = {
             BottNavigationBar()
@@ -65,11 +70,11 @@ fun FavoritesScreen() {
                     .weight(1f)
                     .fillMaxHeight()
             ) {
-                items(drinks.size) { index ->
-                    val drink = drinks[index]
+                items(items.size) { index ->
+                    val item = items[index]
                     Column {
-                        DrinkItem(drink)
-                        if (index < drinks.size - 1) {
+                        ListAccountItem(item)
+                        if (index < items.size - 1) {
                             MediumDivider()
                         }
                     }
@@ -80,42 +85,70 @@ fun FavoritesScreen() {
                 thickness = 1.dp,
             )
             Spacer(modifier = Modifier.size(30.dp))
-            ButtonBar("Add All To Cart")
+            LogoutButton("Log Out")
         }
     }
 }
 
 @Composable
-fun DrinkItem(drink: Item) {
+fun ListAccountItem(item: ListableItem) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(110.dp)
+            .height(70.dp)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = drink.imageRes),
-            contentDescription = drink.name,
-            modifier = Modifier.size(48.dp)
+            painter = painterResource(id = item.imageRes),
+            contentDescription = item.name,
+            modifier = Modifier.size(25.dp)
         )
         Column(
             modifier = Modifier
                 .weight(1f)
                 .padding(start = 16.dp)
         ) {
-            Text(drink.name, fontWeight = FontWeight.Bold)
-            Text("${drink.volume}, Price", color = Color.Gray, fontSize = 14.sp)
+            Text(item.name, fontWeight = FontWeight.Bold, fontSize = 18.sp)
         }
-        Text(
-            drink.price,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(end = 8.dp)
-        )
         Icon(
             painter = painterResource(id = R.drawable.next_arrow),
             contentDescription = "More",
             modifier = Modifier.size(15.dp)
         )
+    }
+}
+
+@Composable
+fun LogoutButton(title: String) {
+    Button(
+        onClick = { },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(95.dp)
+            .padding(16.dp),
+        shape = RoundedCornerShape(12.dp),
+        colors = ButtonDefaults.buttonColors(Color(color = 0xFFF2F3F2))
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.logout),
+                contentDescription = "Logout",
+                modifier = Modifier.size(25.dp),
+                tint = Color(color = 0xFF53B175)
+            )
+            Spacer(modifier = Modifier.width(12.dp))
+            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                Text(
+                    text = title,
+                    color = Color(color = 0xFF53B175),
+                    fontSize = 20.sp
+                )
+            }
+        }
     }
 }
