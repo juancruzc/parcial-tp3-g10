@@ -15,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +44,7 @@ fun HomeScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(Color.White)
     ) {
         TopAppBar(
             title = {
@@ -64,7 +65,8 @@ fun HomeScreen() {
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
         LazyColumn(
-            modifier = Modifier.fillMaxWidth().height(710.dp),
+            modifier = Modifier
+                .fillMaxWidth(),
             contentPadding = PaddingValues(16.dp)
         ) {
             item {
@@ -160,7 +162,7 @@ fun HomeScreen() {
                 }
             }
         }
-        BottNavigationBar()
+        BottomAppBar(modifier = Modifier.fillMaxSize()) { BottNavigationBar() }
     }
 }
 
