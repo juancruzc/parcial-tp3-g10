@@ -34,12 +34,12 @@ import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.Header
 import com.example.parcialtp3grupo10.ui.components.ProductCard
 import androidx.compose.runtime.setValue
+import androidx.navigation.NavController
 import com.example.parcialtp3grupo10.model.Beverage
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview
 @Composable
-fun SearchScreen() {
+fun SearchScreen(navController: NavController? = null) {
     var searchQuery by remember { mutableStateOf("") }
     val filteredProducts = remember(searchQuery) {
         if (searchQuery.isEmpty()) {
@@ -66,7 +66,9 @@ fun SearchScreen() {
             )
         },
         bottomBar = {
-            BottNavigationBar()
+            if (navController != null) {
+                BottNavigationBar(navController)
+            }
         }
     ) { innerPadding ->
         Column(

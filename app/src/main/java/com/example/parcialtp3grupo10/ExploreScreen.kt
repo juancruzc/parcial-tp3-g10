@@ -24,15 +24,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.parcialtp3grupo10.R
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.Header
 import com.example.parcialtp3grupo10.ui.components.FilterBottomSheet
 
-@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FindProductsScreen() {
+fun FindProductsScreen(navController: NavController? = null) {
     var showFilters by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -49,7 +49,9 @@ fun FindProductsScreen() {
             )
         },
         bottomBar = {
-            BottNavigationBar()
+            if (navController != null) {
+                BottNavigationBar(navController)
+            }
         }
     ) { innerPadding ->
         Column(

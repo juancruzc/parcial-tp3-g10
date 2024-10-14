@@ -1,6 +1,7 @@
 package com.example.parcialtp3grupo10
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
@@ -41,15 +42,21 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavArgument
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.example.parcialtp3grupo10.model.Product
+import com.example.parcialtp3grupo10.ui.FindProductsScreen
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.CartCard
 import com.example.parcialtp3grupo10.ui.components.CheckoutCard
 import com.example.parcialtp3grupo10.ui.components.Header
+import com.example.parcialtp3grupo10.ui.components.Success
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartScreen(modifier: Modifier) {
+fun CartScreen(modifier: Modifier, navController: NavController? = null) {
 
     var showOverlay by remember { mutableStateOf(false) }
     var total by remember { mutableDoubleStateOf(0.0) }
@@ -60,7 +67,9 @@ fun CartScreen(modifier: Modifier) {
             HorizontalDivider(color = Color(0xFFB3B3B3), thickness = 1.dp)
         },
         bottomBar = {
-            BottNavigationBar()
+            if (navController != null) {
+                BottNavigationBar(navController)
+            }
         }
     ) { innerPadding ->
         Column(
@@ -100,16 +109,19 @@ fun CartScreen(modifier: Modifier) {
                     .background(Color(0x80000000))
                     .zIndex(1f)
             ) {
-                SlideUpPopup(
-                    isVisible = showOverlay,
-                    onClose = { showOverlay = false },
-                    total = total,
-                    modifier = modifier
-                        .align(Alignment.BottomCenter)
-                        .fillMaxWidth()
-                        .wrapContentHeight()
-                        .padding(bottom = 16.dp)
-                )
+                if (navController != null) {
+                    SlideUpPopup(
+                        isVisible = showOverlay,
+                        onClose = { showOverlay = false },
+                        total = total,
+                        modifier = modifier
+                            .align(Alignment.BottomCenter)
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(bottom = 16.dp),
+                        navController = navController
+                    )
+                }
             }
         }
     }
@@ -117,15 +129,15 @@ fun CartScreen(modifier: Modifier) {
 
 @SuppressLint("UseOfNonLambdaOffsetOverload")
 @Composable
-fun SlideUpPopup(isVisible: Boolean, total: Double, onClose: () -> Unit, modifier: Modifier = Modifier) {
+fun SlideUpPopup(isVisible: Boolean, total: Double, onClose: () -> Unit, modifier: Modifier = Modifier, navController: NavController) {
     AnimatedVisibility(
         visible = isVisible,
         enter = slideInVertically(
-            initialOffsetY = { it }, // Slide from the bottom
+            initialOffsetY = { it },
             animationSpec = tween(durationMillis = 300)
         ),
         exit = slideOutVertically(
-            targetOffsetY = { it }, // Slide out to the bottom
+            targetOffsetY = { it },
             animationSpec = tween(durationMillis = 300)
         )
     ) {
@@ -134,7 +146,7 @@ fun SlideUpPopup(isVisible: Boolean, total: Double, onClose: () -> Unit, modifie
                 .background(Color.White)
                 .zIndex(2f)
         ) {
-            CheckoutCard(total, onClose)
+            CheckoutCard(total, onClose, { navController.navigate("") })
         }
     }
 }

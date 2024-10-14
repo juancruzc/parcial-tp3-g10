@@ -21,6 +21,7 @@ import com.example.parcialtp3grupo10.ui.SecondScreen
 import com.example.parcialtp3grupo10.ui.LoginScreen
 import com.example.parcialtp3grupo10.ui.RegisterScreen
 import com.example.parcialtp3grupo10.ui.FifthScreen
+import com.example.parcialtp3grupo10.ui.FindProductsScreen
 import com.example.parcialtp3grupo10.ui.theme.ParcialTP3Grupo10Theme
 import kotlinx.coroutines.delay
 
@@ -37,9 +38,9 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(navController = navController, startDestination = "welcome") {
                         composable("welcome") {
-                            WelcomeScreen() // Elimina el viewModel
+                            WelcomeScreen()
                             LaunchedEffect(Unit) {
-                                delay(3000L)  // 3 segundos
+                                delay(3000L)
                                 navController.navigate("second")
                             }
                         }
@@ -49,14 +50,26 @@ class MainActivity : ComponentActivity() {
                         composable("login") {
                             LoginScreen(navController)
                         }
-                        composable("register") {  // Nueva ruta para la pantalla de registro
+                        composable("register") {
                             RegisterScreen(navController)
                         }
                         composable("lastScreen") {
                             FifthScreen(navController)
                         }
                         composable("home") {
-                            HomeScreen() // Define tu HomeScreen aquí
+                            HomeScreen(navController)
+                        }
+                        composable("explore") {
+                            FindProductsScreen(navController)
+                        }
+                        composable("cart") {
+                            CartScreen(Modifier, navController)
+                        }
+                        composable("favourites") {
+                            FavoritesScreen(navController)
+                        }
+                        composable("account") {
+                            AccountScreen(navController)
                         }
                     }
                 }

@@ -98,11 +98,11 @@ fun CartCard(
                         onClick = { if (quantity > 1) quantity-- },
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Add,
+                            painter = painterResource(id = R.drawable.minus),
                             contentDescription = "Add to cart",
                             tint = Color(0xFFB3B3B3),
                             modifier = Modifier
-                                .size(18.dp)
+                                .size(40.dp)
                         )
                     }
 
@@ -116,11 +116,11 @@ fun CartCard(
                         onClick = { quantity++ },
                     ) {
                         Icon(
-                            imageVector = Icons.Default.Add,
+                            painter = painterResource(id = R.drawable.plus),
                             contentDescription = "Add to cart",
                             tint = Color(0xFF53B175),
                             modifier = Modifier
-                                .size(18.dp)
+                                .size(40.dp)
                         )
                     }
                 }

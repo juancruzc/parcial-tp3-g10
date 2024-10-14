@@ -15,11 +15,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.parcialtp3grupo10.R
 
-@Preview
 @Composable
-fun BottNavigationBar() {
+fun BottNavigationBar(navController: NavController) {
     BottomNavigation(
         backgroundColor = Color.White,
         modifier = Modifier.height(85.dp)
@@ -36,7 +36,7 @@ fun BottNavigationBar() {
                 )
             },
             selected = false,
-            onClick = { }
+            onClick = { navController.navigate("home") }
         )
         BottomNavigationItem(
             modifier = Modifier.fillMaxWidth(),
@@ -51,7 +51,7 @@ fun BottNavigationBar() {
                 )
             },
             selected = false,
-            onClick = { }
+            onClick = { navController.navigate("explore") }
         )
         BottomNavigationItem(
 
@@ -66,7 +66,7 @@ fun BottNavigationBar() {
                 )
             },
             selected = false,
-            onClick = { }
+            onClick = { navController.navigate("cart") }
         )
         BottomNavigationItem(
             icon = {
@@ -81,7 +81,7 @@ fun BottNavigationBar() {
             },
             modifier = Modifier.padding(),
             selected = false,
-            onClick = { }
+            onClick = { navController.navigate("favourites") }
         )
         BottomNavigationItem(
             icon = {
@@ -95,7 +95,7 @@ fun BottNavigationBar() {
                 )
             },
             selected = false,
-            onClick = { }
+            onClick = { navController.navigate("account") }
         )
     }
 }

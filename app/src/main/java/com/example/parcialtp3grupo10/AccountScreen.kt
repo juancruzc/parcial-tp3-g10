@@ -29,6 +29,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.Header
 import com.example.parcialtp3grupo10.ui.components.MediumDivider
@@ -48,15 +49,16 @@ val items = listOf(
     ListableItem("Help", R.drawable.help),
 )
 
-@Preview
 @Composable
-fun AccountScreen() {
+fun AccountScreen(navController: NavController? = null) {
     Scaffold(
         topBar = {
             Header("Account ")
         },
         bottomBar = {
-            BottNavigationBar()
+            if (navController != null) {
+                BottNavigationBar(navController)
+            }
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {

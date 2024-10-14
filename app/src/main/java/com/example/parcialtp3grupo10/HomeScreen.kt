@@ -19,6 +19,7 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -32,19 +33,27 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.parcialtp3grupo10.model.Product
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.Header
 import com.example.parcialtp3grupo10.ui.components.ProductCard
 
-@Preview
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun HomeScreen() {
+fun HomeScreen(navController: NavController? = null) {
+    Scaffold (
+        bottomBar = {
+            if (navController != null) {
+                BottNavigationBar(navController)
+            }
+        }
+    ) { innerPadding ->
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White)
+            .padding(innerPadding),
     ) {
         TopAppBar(
             title = {
@@ -163,6 +172,7 @@ fun HomeScreen() {
             }
         }
     }
+    }
 }
 
 @Composable
@@ -188,5 +198,13 @@ private fun SectionHeader(
                 color = Color(0xFF4CAF50)
             )
         }
+    }
+}
+
+@Preview
+@Composable
+fun PreviewHomeScreen() {
+    MaterialTheme {
+        HomeScreen()
     }
 }

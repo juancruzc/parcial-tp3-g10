@@ -23,6 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.ButtonBar
 import com.example.parcialtp3grupo10.ui.components.Header
@@ -37,7 +38,7 @@ data class Item(
 
 @Preview
 @Composable
-fun FavoritesScreen() {
+fun FavoritesScreen(navController: NavController? = null) {
     val drinks = listOf(
         Item("Sprite Can", "325ml", "$1.50", R.drawable.sprite),
         Item("Diet Coke", "355ml", "$1.99", R.drawable.diet_coke),
@@ -51,7 +52,9 @@ fun FavoritesScreen() {
             Header("Favourites")
         },
         bottomBar = {
-            BottNavigationBar()
+            if (navController != null) {
+                BottNavigationBar(navController)
+            }
         }
     ) { innerPadding ->
         Column(modifier = Modifier.padding(innerPadding)) {
