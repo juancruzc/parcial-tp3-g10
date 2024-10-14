@@ -33,34 +33,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FifthScreen(navController: NavHostController) {
-    // Variables para manejar los estados de los desplegables
     var selectedLocation by remember { mutableStateOf("Buenos Aires") }
-    var expandedLocation by remember { mutableStateOf(false) } // Estado del menú desplegable de zonas
+    var expandedLocation by remember { mutableStateOf(false) }
 
     var selectedArea by remember { mutableStateOf("Area 1") }
-    var expandedArea by remember { mutableStateOf(false) } // Estado del menú desplegable de áreas
+    var expandedArea by remember { mutableStateOf(false) }
 
-    // Opciones para el menú desplegable
     val locations = listOf("Buenos Aires", "Mendoza")
     val areas = listOf("Area 1", "Area 2")
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White), // Fondo blanco
-        contentAlignment = Alignment.Center // Centramos el contenido
+            .background(Color.White),
+        contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(32.dp), // Espacio alrededor del contenido
+                .padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp) // Espaciado entre elementos
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            // Título principal
             Text(
                 text = "Select Your Location",
                 fontSize = 30.sp,
@@ -68,12 +66,11 @@ fun FifthScreen(navController: NavHostController) {
                 color = Color.Black
             )
 
-            // Mensaje descriptivo
             Text(
                 text = "Switch on your location to stay in tune with what’s happening in your area.",
                 fontSize = 16.sp,
                 color = Color.Gray,
-                textAlign = androidx.compose.ui.text.style.TextAlign.Center // Centrar texto
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center
             )
 
             Spacer(modifier = Modifier.height(30.dp))
@@ -81,7 +78,7 @@ fun FifthScreen(navController: NavHostController) {
             // Desplegable para seleccionar zona
             ExposedDropdownMenuBox(
                 expanded = expandedLocation,
-                onExpandedChange = { expandedLocation = !expandedLocation } // Manejar la expansión del menú
+                onExpandedChange = { expandedLocation = !expandedLocation }
             ) {
                 TextField(
                     readOnly = true,
@@ -91,8 +88,12 @@ fun FifthScreen(navController: NavHostController) {
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedLocation)
                     },
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.White // Color de fondo del TextField
+                    // Alternativa a textFieldColors
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -100,14 +101,14 @@ fun FifthScreen(navController: NavHostController) {
                 // Opciones del menú desplegable
                 ExposedDropdownMenu(
                     expanded = expandedLocation,
-                    onDismissRequest = { expandedLocation = false } // Cerrar el menú al hacer clic fuera
+                    onDismissRequest = { expandedLocation = false }
                 ) {
                     locations.forEach { location ->
                         DropdownMenuItem(
                             text = { Text(location) },
                             onClick = {
                                 selectedLocation = location
-                                expandedLocation = false // Cerrar el menú al seleccionar una opción
+                                expandedLocation = false
                             }
                         )
                     }
@@ -117,7 +118,7 @@ fun FifthScreen(navController: NavHostController) {
             // Desplegable para seleccionar área
             ExposedDropdownMenuBox(
                 expanded = expandedArea,
-                onExpandedChange = { expandedArea = !expandedArea } // Manejar la expansión del menú
+                onExpandedChange = { expandedArea = !expandedArea }
             ) {
                 TextField(
                     readOnly = true,
@@ -127,8 +128,12 @@ fun FifthScreen(navController: NavHostController) {
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedArea)
                     },
-                    colors = TextFieldDefaults.textFieldColors(
-                        containerColor = Color.White // Color de fondo del TextField
+                    // Alternativa a textFieldColors
+                    colors = TextFieldDefaults.colors(
+                        focusedContainerColor = Color.Transparent,
+                        unfocusedContainerColor = Color.Transparent,
+                        focusedTextColor = Color.Black,
+                        unfocusedTextColor = Color.Black
                     ),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -136,14 +141,14 @@ fun FifthScreen(navController: NavHostController) {
                 // Opciones del menú desplegable
                 ExposedDropdownMenu(
                     expanded = expandedArea,
-                    onDismissRequest = { expandedArea = false } // Cerrar el menú al hacer clic fuera
+                    onDismissRequest = { expandedArea = false }
                 ) {
                     areas.forEach { area ->
                         DropdownMenuItem(
                             text = { Text(area) },
                             onClick = {
                                 selectedArea = area
-                                expandedArea = false // Cerrar el menú al seleccionar una opción
+                                expandedArea = false
                             }
                         )
                     }
@@ -152,19 +157,18 @@ fun FifthScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botón de confirmación
             Button(
-                onClick = { navController.navigate("home") }, // Navegar a HomeScreen
+                onClick = { navController.navigate("home") },
                 modifier = Modifier
-                    .width(364.dp) // Ancho en dp
-                    .height(67.dp), // Altura en dp
+                    .width(364.dp)
+                    .height(67.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF53B175) // Color de fondo (verde)
+                    containerColor = Color(0xFF53B175)
                 )
             ) {
                 Text(
                     "Submit",
-                    color = Color.White // Texto en blanco para el botón
+                    color = Color.White
                 )
             }
         }

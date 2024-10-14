@@ -63,6 +63,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
 
     // Compose libraries
+    implementation("androidx.compose.material3:material3:1.1.0")
     implementation("androidx.compose.material:material:1.7.3") // Usa la versión más reciente
     implementation("androidx.compose.material3:material3:1.3.0")
     implementation("androidx.compose.ui:ui:1.7.3")
@@ -71,6 +72,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.7.3") // Asegúrate de que la versión sea correcta
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
+    implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation(libs.androidx.runtime.livedata)
 
     // UI testing libraries

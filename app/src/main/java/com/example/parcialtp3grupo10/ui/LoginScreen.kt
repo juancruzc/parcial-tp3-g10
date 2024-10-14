@@ -60,8 +60,11 @@ fun LoginScreen(navController: NavHostController) {
                 value = email,
                 onValueChange = { email = it },
                 modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
                 )
             )
 
@@ -80,8 +83,11 @@ fun LoginScreen(navController: NavHostController) {
                 onValueChange = { password = it },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
-                colors = TextFieldDefaults.textFieldColors(
-                    containerColor = Color.White
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = Color.Transparent,
+                    unfocusedContainerColor = Color.Transparent,
+                    focusedTextColor = Color.Black,
+                    unfocusedTextColor = Color.Black
                 )
             )
 
@@ -105,7 +111,6 @@ fun LoginScreen(navController: NavHostController) {
             // Botón "Log In"
             Button(
                 onClick = {
-                    // Lógica de login
                     navController.navigate("lastScreen") // Navegar a la última pantalla
                 },
                 modifier = Modifier
