@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.parcialtp3grupo10.R
+import com.example.parcialtp3grupo10.ui.components.ButtonBar2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -156,24 +157,7 @@ fun RegisterScreen(navController: NavHostController?) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botón de registro
-            Button(
-                onClick = {
-                    // Navegar a la vista 5
-                    navController?.navigate("lastScreen")
-                },
-                modifier = Modifier
-                    .width(364.dp)
-                    .height(67.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF53B175)
-                )
-            ) {
-                Text(
-                    "Sign Up",
-                    color = Color.White
-                )
-            }
+            ButtonBar2(title = "Sign Up", onClick = { navController?.navigate("lastScreen") })
 
             Spacer(modifier = Modifier.height(16.dp))
 

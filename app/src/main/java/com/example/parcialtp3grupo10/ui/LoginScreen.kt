@@ -18,6 +18,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.compose.ui.res.painterResource
 import com.example.parcialtp3grupo10.R
 import androidx.compose.foundation.Image
+import com.example.parcialtp3grupo10.ui.components.ButtonBar2
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -123,23 +125,7 @@ fun LoginScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botón "Log In"
-            Button(
-                onClick = {
-                    navController.navigate("lastScreen") // Navegar a la última pantalla
-                },
-                modifier = Modifier
-                    .width(364.dp)
-                    .height(67.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF53B175)
-                )
-            ) {
-                Text(
-                    "Log In",
-                    color = Color.White
-                )
-            }
+            ButtonBar2(title = "Log In", onClick = { navController?.navigate("lastScreen") })
 
             Spacer(modifier = Modifier.height(16.dp))
 

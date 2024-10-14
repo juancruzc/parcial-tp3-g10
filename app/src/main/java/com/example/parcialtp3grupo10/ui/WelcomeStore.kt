@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import androidx.compose.ui.graphics.graphicsLayer
 import com.example.parcialtp3grupo10.R
+import com.example.parcialtp3grupo10.ui.components.ButtonBar2
 
 @Composable
 fun SecondScreen(navController: NavHostController?) {
@@ -89,21 +90,7 @@ fun SecondScreen(navController: NavHostController?) {
             Spacer(modifier = Modifier.height(20.dp)) // Espacio entre el texto y el botón
 
             // Botón
-            Button(
-                onClick = { navController?.navigate("login") }, // Navega a LoginScreen
-                modifier = Modifier
-                    .width(364.dp)
-                    .height(67.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF53B175)
-                )
-            ) {
-                Text(
-                    text = "Get Started",
-                    color = Color.White,
-                    fontSize = 16.sp
-                )
-            }
+            ButtonBar2(title = "Get Started", onClick = { navController?.navigate("login") })
         }
     }
 }

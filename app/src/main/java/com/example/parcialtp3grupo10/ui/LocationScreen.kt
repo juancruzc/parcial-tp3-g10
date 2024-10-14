@@ -35,6 +35,8 @@ import androidx.navigation.NavHostController
 import androidx.compose.foundation.Image
 import androidx.compose.ui.res.painterResource
 import com.example.parcialtp3grupo10.R
+import androidx.compose.ui.platform.LocalContext
+import com.example.parcialtp3grupo10.ui.components.ButtonBar2
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,14 +54,22 @@ fun FifthScreen(navController: NavHostController) {
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
-        contentAlignment = Alignment.Center
     ) {
+        // Imagen img_5 arriba a la izquierda
+        Image(
+            painter = painterResource(id = R.drawable.img_5),
+            contentDescription = "Image in top left",
+            modifier = Modifier
+                .align(Alignment.TopStart) // Alinear arriba a la izquierda
+                .padding(16.dp)            // Agregar un pequeño margen desde la esquina
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             // Imagen img4 arriba del título
             Image(
@@ -162,34 +172,23 @@ fun FifthScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(
-                onClick = { navController.navigate("home") },
-                modifier = Modifier
-                    .width(364.dp)
-                    .height(67.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color(0xFF53B175)
-                )
-            ) {
-                Text(
-                    "Submit",
-                    color = Color.White
-                )
-            }
+            ButtonBar2(title = "Submit", onClick = { navController?.navigate("home") })
 
-            // Imagen img_2 abajo de todo
-            Image(
-                painter = painterResource(id = R.drawable.img_2),
-                contentDescription = "Image at the bottom",
-                modifier = Modifier.fillMaxWidth() // O puedes especificar un tamaño específico
-            )
         }
+
+        // Imagen img_2 abajo de todo, centrada horizontalmente
+        Image(
+            painter = painterResource(id = R.drawable.img_2),
+            contentDescription = "Image at the bottom",
+            modifier = Modifier
+                .align(Alignment.BottomCenter)  // Alinear al fondo, en el centro
+                .fillMaxWidth()
+        )
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun FifthScreenPreview() {
-    // Para previsualización sin navegación
-    // FifthScreen() // Aquí necesitarías un NavHostController, pero no se puede usar en Preview
+    FifthScreen(navController = NavHostController(context = LocalContext.current))
 }
