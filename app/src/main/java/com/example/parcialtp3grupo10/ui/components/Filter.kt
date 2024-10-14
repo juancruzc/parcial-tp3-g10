@@ -20,6 +20,9 @@ import androidx.compose.ui.unit.dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterBottomSheet(isOpen: Boolean, onDismiss: () -> Unit) {
+    var selectedCategories by remember { mutableStateOf(setOf<String>()) }
+    var selectedBrands by remember { mutableStateOf(setOf<String>()) }
+
     if (isOpen) {
         Box(
             modifier = Modifier
@@ -64,8 +67,8 @@ fun FilterBottomSheet(isOpen: Boolean, onDismiss: () -> Unit) {
                         FilterSection(
                             title = "Categories",
                             items = listOf("Eggs", "Noodles & Pasta", "Chips & Crisps", "Fast Food"),
-                            selectedItems = setOf("Eggs"),
-                            onItemSelect = { /* Maneja la selección */ }
+                            selectedItems = selectedCategories,
+                            onItemSelect = { selectedCategories = it }
                         )
 
                         Spacer(modifier = Modifier.height(16.dp))
@@ -73,8 +76,8 @@ fun FilterBottomSheet(isOpen: Boolean, onDismiss: () -> Unit) {
                         FilterSection(
                             title = "Brand",
                             items = listOf("Individual Collection", "Cocola", "Ifad", "Kazi Farmas"),
-                            selectedItems = setOf("Cocola"),
-                            onItemSelect = { /* Maneja la selección */ }
+                            selectedItems = selectedBrands,
+                            onItemSelect = { selectedBrands = it }
                         )
                     }
 
