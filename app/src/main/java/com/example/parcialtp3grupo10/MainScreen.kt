@@ -121,16 +121,21 @@ fun MainScreen(modifier: Modifier = Modifier) {
             }
         }
     ) { innerPadding ->
-        ContentScreen(modifier = Modifier.padding(innerPadding),selectedIndex)
+        ContentScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            selectedIndex
+        )
     }
 }
 
 @Composable
-fun ContentScreen(modifier: Modifier = Modifier, selectedIndex : Int) {
+fun ContentScreen(modifier: Modifier, selectedIndex : Int) {
     when(selectedIndex){
         0-> HomeScreen()
         1-> FindProductsScreen()
-        2-> CartScreen()
+        2-> CartScreen(modifier = modifier)
         3-> FavoritesScreen()
         4-> AccountScreen()
     }

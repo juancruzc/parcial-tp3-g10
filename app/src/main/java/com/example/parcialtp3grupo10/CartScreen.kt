@@ -1,20 +1,21 @@
 package com.example.parcialtp3grupo10
 
-import androidx.compose.animation.core.animateDpAsState
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -23,8 +24,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
@@ -41,40 +42,34 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.parcialtp3grupo10.model.Product
+import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.CartCard
 import com.example.parcialtp3grupo10.ui.components.CheckoutCard
 import com.example.parcialtp3grupo10.ui.components.Header
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartScreen() {
+fun CartScreen(modifier: Modifier) {
 
     var showOverlay by remember { mutableStateOf(false) }
     var total by remember { mutableDoubleStateOf(0.0) }
 
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
+    Scaffold(
+        topBar = {
+            Header("My cart")
+            HorizontalDivider(color = Color(0xFFB3B3B3), thickness = 1.dp)
+        },
+        bottomBar = {
+            BottNavigationBar()
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            TopAppBar(
-                modifier = Modifier.zIndex(1f),
-                title = {
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        Header("My Cart")
-                    }
-                },
-            )
-            Spacer(modifier = Modifier.size(5.dp))
-
-            HorizontalDivider(color = Color(0xFFB3B3B3), thickness = 1.dp)
-
             val productsOne = listOf(
                 Product("Organic Bananas", "7pcs, Price", 4.99, R.drawable.banana),
                 Product("Red Apple", "1kg, Price", 4.99, R.drawable.apple),
@@ -96,52 +91,58 @@ fun CartScreen() {
             }
 
             total = productsOne.sumOf { it.price }
-            CheckoutButton(total.toString()) { showOverlay = true }
+            CheckoutButton(total.toString(), onClick = { showOverlay = true })
         }
 
         if (showOverlay) {
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
                     .background(Color(0x80000000))
                     .zIndex(1f)
             ) {
                 SlideUpPopup(
                     isVisible = showOverlay,
                     onClose = { showOverlay = false },
-                    total = total
+                    total = total,
+                    modifier = modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .padding(bottom = 16.dp)
                 )
             }
         }
     }
 }
 
+@SuppressLint("UseOfNonLambdaOffsetOverload")
 @Composable
-fun SlideUpPopup(isVisible: Boolean, total: Double, onClose: () -> Unit) {
-    val slideOffset by animateDpAsState(
-        targetValue = if (isVisible) 0.dp else 300.dp, // Controls slide in and out
-        animationSpec = tween(durationMillis = 300) // Animation duration
-    )
-
-    // Animated popup that slides up from the bottom
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(600.dp) // Occupies half the screen
-            //.align(Alignment.BottomCenter)
-            .offset(y = slideOffset) // Control the slide-in effect
-            .background(Color.White)
-            .zIndex(2f) // Popup on top of the grayed-out background
+fun SlideUpPopup(isVisible: Boolean, total: Double, onClose: () -> Unit, modifier: Modifier = Modifier) {
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = slideInVertically(
+            initialOffsetY = { it }, // Slide from the bottom
+            animationSpec = tween(durationMillis = 300)
+        ),
+        exit = slideOutVertically(
+            targetOffsetY = { it }, // Slide out to the bottom
+            animationSpec = tween(durationMillis = 300)
+        )
     ) {
-        // Content inside the popup
-        CheckoutCard(total)
+        Box(
+            modifier = modifier
+                .background(Color.White)
+                .zIndex(2f)
+        ) {
+            CheckoutCard(total, onClose)
+        }
     }
 }
 
 @Composable
 fun CheckoutButton(totalPrice: String, onClick: () -> Unit) {
     Button(
-        onClick = {onClick},
+        onClick = onClick ,
         modifier = Modifier
             .fillMaxWidth()
             .height(95.dp)
@@ -188,6 +189,6 @@ fun CheckoutButton(totalPrice: String, onClick: () -> Unit) {
 @Composable
 fun CartScreenPreview() {
     MaterialTheme {
-        CartScreen()
+        CartScreen(modifier = Modifier)
     }
 }
