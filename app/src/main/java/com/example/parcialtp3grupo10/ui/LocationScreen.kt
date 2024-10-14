@@ -32,7 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-
+import androidx.compose.foundation.Image
+import androidx.compose.ui.res.painterResource
+import com.example.parcialtp3grupo10.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -59,6 +61,13 @@ fun FifthScreen(navController: NavHostController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
+            // Imagen img4 arriba del título
+            Image(
+                painter = painterResource(id = R.drawable.img_4),
+                contentDescription = "Image at the top",
+                modifier = Modifier.fillMaxWidth() // O puedes especificar un tamaño específico
+            )
+
             Text(
                 text = "Select Your Location",
                 fontSize = 30.sp,
@@ -88,7 +97,6 @@ fun FifthScreen(navController: NavHostController) {
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedLocation)
                     },
-                    // Alternativa a textFieldColors
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent,
@@ -98,7 +106,6 @@ fun FifthScreen(navController: NavHostController) {
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                // Opciones del menú desplegable
                 ExposedDropdownMenu(
                     expanded = expandedLocation,
                     onDismissRequest = { expandedLocation = false }
@@ -128,7 +135,6 @@ fun FifthScreen(navController: NavHostController) {
                     trailingIcon = {
                         ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedArea)
                     },
-                    // Alternativa a textFieldColors
                     colors = TextFieldDefaults.colors(
                         focusedContainerColor = Color.Transparent,
                         unfocusedContainerColor = Color.Transparent,
@@ -138,7 +144,6 @@ fun FifthScreen(navController: NavHostController) {
                     modifier = Modifier.fillMaxWidth()
                 )
 
-                // Opciones del menú desplegable
                 ExposedDropdownMenu(
                     expanded = expandedArea,
                     onDismissRequest = { expandedArea = false }
@@ -171,6 +176,13 @@ fun FifthScreen(navController: NavHostController) {
                     color = Color.White
                 )
             }
+
+            // Imagen img_2 abajo de todo
+            Image(
+                painter = painterResource(id = R.drawable.img_2),
+                contentDescription = "Image at the bottom",
+                modifier = Modifier.fillMaxWidth() // O puedes especificar un tamaño específico
+            )
         }
     }
 }

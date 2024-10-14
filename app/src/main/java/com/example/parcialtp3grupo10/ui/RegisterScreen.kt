@@ -1,5 +1,6 @@
 package com.example.parcialtp3grupo10.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -8,6 +9,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -18,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.parcialtp3grupo10.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -39,6 +42,18 @@ fun RegisterScreen(navController: NavHostController?) {
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.Start
         ) {
+
+            Image(
+                painter = painterResource(id = R.drawable.img_3), // Reemplaza con el nombre de tu imagen
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp) // Ajusta la altura según sea necesario
+                    .align(Alignment.CenterHorizontally) // Centra la imagen horizontalmente
+            )
+
+            Spacer(modifier = Modifier.height(116.dp)) // Espaciado entre la imagen y el título
+
             Text(
                 text = "Sign Up",
                 fontSize = 30.sp,
@@ -185,6 +200,19 @@ fun RegisterScreen(navController: NavHostController?) {
                     }
                 )
             }
+
+            // Spacer para empujar la imagen hacia abajo
+            Spacer(modifier = Modifier.weight(1f)) // Este espaciador empujará el contenido hacia abajo
+
+            // Imagen en la parte inferior
+            Image(
+                painter = painterResource(id = R.drawable.img_2), // Reemplaza con el nombre de tu imagen
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(15.dp) // Ajusta la altura según sea necesario
+                    .align(Alignment.CenterHorizontally) // Centra la imagen horizontalmente
+            )
         }
     }
 }

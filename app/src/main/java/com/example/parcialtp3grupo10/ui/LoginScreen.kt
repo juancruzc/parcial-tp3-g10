@@ -15,6 +15,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.res.painterResource
+import com.example.parcialtp3grupo10.R
+import androidx.compose.foundation.Image
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +37,18 @@ fun LoginScreen(navController: NavHostController) {
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.Start
         ) {
+            // Imagen centrada horizontalmente
+            Image(
+                painter = painterResource(id = R.drawable.img_3), // Reemplaza con el nombre de tu imagen
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp) // Ajusta la altura según sea necesario
+                    .align(Alignment.CenterHorizontally) // Centra la imagen horizontalmente
+            )
+
+            Spacer(modifier = Modifier.height(116.dp)) // Espaciado entre la imagen y el título
+
             Text(
                 text = "Sign In",
                 fontSize = 30.sp,
@@ -151,6 +166,18 @@ fun LoginScreen(navController: NavHostController) {
                     }
                 )
             }
+
+            Spacer(modifier = Modifier.weight(1f)) // Este espaciador empuja a img_2 hacia abajo
+
+            // Imagen en la parte inferior
+            Image(
+                painter = painterResource(id = R.drawable.img_2), // Reemplaza con el nombre de tu imagen
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(15.dp) // Ajusta la altura según sea necesario
+                    .align(Alignment.CenterHorizontally) // Centra la imagen horizontalmente
+            )
         }
     }
 }
