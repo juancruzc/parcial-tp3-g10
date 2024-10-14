@@ -162,7 +162,6 @@ fun HomeScreen() {
                 }
             }
         }
-        BottomAppBar(modifier = Modifier.fillMaxSize()) { BottNavigationBar() }
     }
 }
 

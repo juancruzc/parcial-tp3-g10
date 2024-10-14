@@ -35,42 +35,41 @@ import com.example.parcialtp3grupo10.ui.components.FilterBottomSheet
 fun FindProductsScreen() {
     var showFilters by remember { mutableStateOf(false) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White),
-    ) {
-        TopAppBar(
-            title = {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Header("Find Products")
-                }
-            },
-        )
-
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Header("Find Products")
+                    }
+                },
+            )
+        },
+        bottomBar = {
+            BottNavigationBar()
+        }
+    ) { innerPadding ->
         Column(
             modifier = Modifier
-                .weight(1f)
                 .fillMaxSize()
+                .background(Color.White)
+                .padding(innerPadding)
         ) {
             SearchBar(onFilterClick = { showFilters = true })
             ProductCategories()
         }
 
-        BottNavigationBar()
-    }
-
-    if (showFilters) {
-        FilterBottomSheet(
-            isOpen = showFilters,
-            onDismiss = {showFilters = false},
-        )
+        if (showFilters) {
+            FilterBottomSheet(
+                isOpen = showFilters,
+                onDismiss = { showFilters = false },
+            )
+        }
     }
 }
-
 @Composable
 fun SearchBar(onFilterClick: () -> Unit) {
     var searchText by remember { mutableStateOf("") }
@@ -123,21 +122,24 @@ fun SearchBar(onFilterClick: () -> Unit) {
 }
 
 @Composable
-fun ProductCategories() {
+fun ProductCategories(modifier: Modifier = Modifier) {
     val categories = listOf(
         Triple("Fresh Fruits & Vegetable", R.drawable.fresh_fruit_vegetable, Color(0xFFE8F5E9)),
         Triple("Cooking Oil & Ghee", R.drawable.cooking_oil_ghee, Color(0xFFFFF3E0)),
         Triple("Meat & Fish", R.drawable.meat_fish, Color(0xFFFFEBEE)),
         Triple("Bakery & Snacks", R.drawable.backery_snacks, Color(0xFFF3E5F5)),
         Triple("Dairy & Eggs", R.drawable.dairy_eggs, Color(0xFFFFFDE7)),
-        Triple("Beverages", R.drawable.beverages, Color(0xFFE3F2FD))
+        Triple("Beverages", R.drawable.beverages, Color(0xFFE3F2FD)),
+        Triple("Fresh Fruits & Vegetable", R.drawable.fresh_fruit_vegetable, Color(0xFFE8F5E9)),
+        Triple("Cooking Oil & Ghee", R.drawable.cooking_oil_ghee, Color(0xFFFFF3E0))
     )
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = modifier
     ) {
         items(categories) { (name, imageRes, backgroundColor) ->
             CategoryItem(name, imageRes, backgroundColor)
