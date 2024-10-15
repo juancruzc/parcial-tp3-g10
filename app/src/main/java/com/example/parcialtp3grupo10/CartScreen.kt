@@ -1,7 +1,6 @@
 package com.example.parcialtp3grupo10
 
 import android.annotation.SuppressLint
-import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInVertically
@@ -42,17 +41,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.navigation.NavArgument
 import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.rememberNavController
 import com.example.parcialtp3grupo10.model.Product
-import com.example.parcialtp3grupo10.ui.FindProductsScreen
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.CartCard
 import com.example.parcialtp3grupo10.ui.components.CheckoutCard
 import com.example.parcialtp3grupo10.ui.components.Header
-import com.example.parcialtp3grupo10.ui.components.Success
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -146,7 +140,7 @@ fun SlideUpPopup(isVisible: Boolean, total: Double, onClose: () -> Unit, modifie
                 .background(Color.White)
                 .zIndex(2f)
         ) {
-            CheckoutCard(total, onClose, { navController.navigate("") })
+            CheckoutCard(total, onClose, navController)
         }
     }
 }

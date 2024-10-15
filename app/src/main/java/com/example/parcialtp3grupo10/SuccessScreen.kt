@@ -1,4 +1,4 @@
-package com.example.parcialtp3grupo10.ui.components
+package com.example.parcialtp3grupo10
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -20,10 +20,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import com.example.parcialtp3grupo10.R
+import androidx.navigation.NavController
+import com.example.parcialtp3grupo10.ui.components.BackButtonBar
+import com.example.parcialtp3grupo10.ui.components.ButtonBar
 
 @Composable
-fun Success () {
+fun SuccessScreen (navController: NavController?= null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -67,7 +69,7 @@ fun Success () {
         verticalArrangement = Arrangement.Bottom
     ){
         ButtonBar("Track Order")
-        BackButtonBar("Back to home")
+        BackButtonBar("Back to home", navController)
     }
 }
 
@@ -75,6 +77,6 @@ fun Success () {
 @Composable
 fun SuccessPreview() {
     MaterialTheme {
-        Success()
+        SuccessScreen()
     }
 }

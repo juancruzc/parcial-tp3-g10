@@ -45,13 +45,14 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.navigation.NavController
 
 @SuppressLint("DefaultLocale")
 @Composable
 fun CheckoutCard(
     price: Double,
     onClick: () -> Unit,
-    checkOnClick: () -> Unit
+    navController: NavController? = null
 ) {
     Card(
         modifier = Modifier
@@ -131,16 +132,18 @@ fun CheckoutCard(
                 fontWeight = FontWeight.Bold
             )
 
-            CheckButtonBar("Place Order", {checkOnClick})
+            if (navController != null) {
+                CheckButtonBar("Place Order", navController)
+            }
 
         }
     }
 }
 
 @Composable
-fun CheckButtonBar(title: String, onClick: () -> Unit) {
+fun CheckButtonBar(title: String, navController: NavController) {
     Button(
-        onClick = onClick,
+        onClick = { navController.navigate("success") },
         modifier = Modifier
             .fillMaxWidth()
             .height(95.dp)
@@ -222,8 +225,7 @@ fun CheckoutCardPreview() {
     MaterialTheme {
         CheckoutCard(
             price = 1.99,
-            onClick = {},
-            checkOnClick = {}
+            onClick = {}
         )
     }
 }
