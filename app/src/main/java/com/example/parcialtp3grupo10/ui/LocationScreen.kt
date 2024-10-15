@@ -83,7 +83,12 @@ fun FifthScreen(navController: NavHostController) {
             ButtonBar2(title = "Submit", onClick = { navController.navigate("home") })
         }
 
-        BottomCenteredImage() // Imagen modular centrada al fondo
+
+        BottomCenteredImage(
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .height(50.dp)
+        )
     }
 }
 
