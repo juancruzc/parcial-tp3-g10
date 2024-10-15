@@ -29,11 +29,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.parcialtp3grupo10.model.Beverage
 import com.example.parcialtp3grupo10.ui.theme.ParcialTP3Grupo10Theme
 
 @Composable
-fun BeverageScreen(modifier: Modifier = Modifier, viewModel: BeverageViewModel = viewModel()) {
+fun BeverageScreen(
+    navController: NavController,  // Agregar el NavController
+    modifier: Modifier = Modifier,
+    viewModel: BeverageViewModel = viewModel()
+) {
     val beverages by viewModel.beverages.observeAsState(emptyList())
 
     Column(
@@ -45,7 +51,7 @@ fun BeverageScreen(modifier: Modifier = Modifier, viewModel: BeverageViewModel =
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(bottom = 16.dp)
         ) {
-            IconButton(onClick = { /* Acción del botón */ }) {
+            IconButton(onClick = { navController.navigateUp() }) { // Usar navigateUp para volver
                 Icon(
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back"
@@ -59,7 +65,7 @@ fun BeverageScreen(modifier: Modifier = Modifier, viewModel: BeverageViewModel =
         }
 
         LazyVerticalGrid(
-            columns = GridCells.Fixed(2), // Fija el número de columnas
+            columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(8.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
@@ -87,7 +93,7 @@ fun BeverageItem(beverage: Beverage) {
             modifier = Modifier
                 .padding(10.dp)
                 .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween,  // Asegurar que los elementos estén bien distribuidos
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.Start
         ) {
             // Imagen de la bebida
@@ -163,7 +169,8 @@ fun BeverageItem(beverage: Beverage) {
 @Preview(showBackground = true)
 @Composable
 fun BeverageScreenPreview() {
+    val navController = rememberNavController()  // Simulamos el NavController en el Preview
     ParcialTP3Grupo10Theme {
-        BeverageScreen() // Aquí no necesitas pasar el modificador
+        BeverageScreen(navController = navController)  // Proporcionamos el NavController
     }
 }

@@ -16,6 +16,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.parcialtp3grupo10.ui.BeverageScreen
 import com.example.parcialtp3grupo10.ui.WelcomeScreen
 import com.example.parcialtp3grupo10.ui.SecondScreen
 import com.example.parcialtp3grupo10.ui.LoginScreen
@@ -70,6 +71,9 @@ class MainActivity : ComponentActivity() {
                         }
                         composable("account") {
                             AccountScreen(navController)
+                        }
+                        composable("beverages") {  // Agregar la pantalla de Beverages
+                            BeverageScreen(navController = navController)
                         }
                     }
                 }

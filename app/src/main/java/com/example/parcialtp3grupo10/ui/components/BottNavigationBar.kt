@@ -54,7 +54,6 @@ fun BottNavigationBar(navController: NavController) {
             onClick = { navController.navigate("explore") }
         )
         BottomNavigationItem(
-
             icon = {
                 Icon(
                     modifier = Modifier
@@ -62,7 +61,7 @@ fun BottNavigationBar(navController: NavController) {
                         .size(60.dp)
                         .padding(top = 11.dp),
                     painter = painterResource(id = R.drawable.cart),
-                    contentDescription = "Explore"
+                    contentDescription = "Cart"
                 )
             },
             selected = false,

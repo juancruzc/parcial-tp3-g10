@@ -3,6 +3,7 @@ package com.example.parcialtp3grupo10.ui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -24,15 +25,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.parcialtp3grupo10.R
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.Header
 import com.example.parcialtp3grupo10.ui.components.FilterBottomSheet
+import androidx.navigation.NavController
 
+@Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FindProductsScreen(navController: NavController? = null) {
+fun FindProductsScreen(navController: NavController) {
     var showFilters by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -49,9 +51,7 @@ fun FindProductsScreen(navController: NavController? = null) {
             )
         },
         bottomBar = {
-            if (navController != null) {
-                BottNavigationBar(navController)
-            }
+            BottNavigationBar(navController) // Pasar el navController aquí
         }
     ) { innerPadding ->
         Column(
@@ -61,7 +61,7 @@ fun FindProductsScreen(navController: NavController? = null) {
                 .padding(innerPadding)
         ) {
             SearchBar(onFilterClick = { showFilters = true })
-            ProductCategories()
+            ProductCategories(navController) // Si necesitas navController aquí
         }
 
         if (showFilters) {
@@ -72,6 +72,7 @@ fun FindProductsScreen(navController: NavController? = null) {
         }
     }
 }
+
 @Composable
 fun SearchBar(onFilterClick: () -> Unit) {
     var searchText by remember { mutableStateOf("") }
@@ -124,16 +125,14 @@ fun SearchBar(onFilterClick: () -> Unit) {
 }
 
 @Composable
-fun ProductCategories(modifier: Modifier = Modifier) {
+fun ProductCategories(navController: NavController, modifier: Modifier = Modifier) {
     val categories = listOf(
         Triple("Fresh Fruits & Vegetable", R.drawable.fresh_fruit_vegetable, Color(0xFFE8F5E9)),
         Triple("Cooking Oil & Ghee", R.drawable.cooking_oil_ghee, Color(0xFFFFF3E0)),
         Triple("Meat & Fish", R.drawable.meat_fish, Color(0xFFFFEBEE)),
         Triple("Bakery & Snacks", R.drawable.backery_snacks, Color(0xFFF3E5F5)),
         Triple("Dairy & Eggs", R.drawable.dairy_eggs, Color(0xFFFFFDE7)),
-        Triple("Beverages", R.drawable.beverages, Color(0xFFE3F2FD)),
-        Triple("Fresh Fruits & Vegetable", R.drawable.fresh_fruit_vegetable, Color(0xFFE8F5E9)),
-        Triple("Cooking Oil & Ghee", R.drawable.cooking_oil_ghee, Color(0xFFFFF3E0))
+        Triple("Beverages", R.drawable.beverages, Color(0xFFE3F2FD))  // Bebidas
     )
 
     LazyVerticalGrid(
@@ -144,13 +143,27 @@ fun ProductCategories(modifier: Modifier = Modifier) {
         modifier = modifier
     ) {
         items(categories) { (name, imageRes, backgroundColor) ->
-            CategoryItem(name, imageRes, backgroundColor)
+            CategoryItem(
+                name = name,
+                imageRes = imageRes,
+                backgroundColor = backgroundColor,
+                onClick = {
+                    if (name == "Beverages") {
+                        navController.navigate("beverages")  // Navegar a la pantalla de bebidas
+                    }
+                }
+            )
         }
     }
 }
 
 @Composable
-fun CategoryItem(name: String, imageRes: Int, backgroundColor: Color) {
+fun CategoryItem(
+    name: String,
+    imageRes: Int,
+    backgroundColor: Color,
+    onClick: () -> Unit  // Agregamos el parámetro onClick
+) {
     val borderColor = backgroundColor.copy(alpha = 0.5f)
 
     Box(
@@ -160,6 +173,7 @@ fun CategoryItem(name: String, imageRes: Int, backgroundColor: Color) {
             .clip(RoundedCornerShape(18.dp))
             .border(1.dp, borderColor, RoundedCornerShape(18.dp))
             .background(backgroundColor)
+            .clickable(onClick = onClick)  // Añadimos el onClick aquí
     ) {
         Column(
             modifier = Modifier
