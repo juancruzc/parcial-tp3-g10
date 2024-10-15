@@ -71,6 +71,9 @@ class MainActivity : ComponentActivity() {
                         composable("account") {
                             AccountScreen(navController)
                         }
+                        composable("search") {
+                            SearchScreen(navController)
+                        }
                     }
                 }
             }

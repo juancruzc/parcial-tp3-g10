@@ -64,10 +64,11 @@ fun FindProductsScreen(navController: NavController? = null) {
             ProductCategories()
         }
 
-        if (showFilters) {
+        if (showFilters && navController != null) {
             FilterBottomSheet(
                 isOpen = showFilters,
                 onDismiss = { showFilters = false },
+                navController = navController
             )
         }
     }
