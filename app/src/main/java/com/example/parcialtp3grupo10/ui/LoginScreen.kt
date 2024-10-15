@@ -25,6 +25,8 @@ import android.util.Log
 import android.widget.Toast
 import com.example.parcialtp3grupo10.client.LoginResponse
 import com.example.parcialtp3grupo10.client.RetrofitInstance
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 
 @Composable
 fun LoginScreen(navController: NavHostController) {
@@ -177,6 +179,13 @@ fun LoginScreen(navController: NavHostController) {
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun LoginScreenPreview() {
+    val navController = rememberNavController()
+    LoginScreen(navController = navController)
 }
 
 
