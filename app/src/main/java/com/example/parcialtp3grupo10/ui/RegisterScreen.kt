@@ -40,6 +40,7 @@ fun RegisterScreen(navController: NavHostController?) {
                 .verticalScroll(rememberScrollState()), // Asegúrate de que este modificador esté aquí
             horizontalAlignment = Alignment.Start
         ) {
+
             // Imagen superior
             Image(
                 painter = painterResource(id = R.drawable.img_3),

@@ -67,7 +67,7 @@ fun HomeScreen(navController: NavController? = null) {
             },
         )
         Text(
-            text = "Dhaka, Banassre",
+            text = "Buenos Aires",
             style = MaterialTheme.typography.bodyMedium,
             color = Color(0xFF4C4F4D),
             fontSize = 18.sp,
