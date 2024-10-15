@@ -1,6 +1,7 @@
 package com.example.parcialtp3grupo10
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,7 @@ fun SuccessScreen (navController: NavController?= null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Color.White)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center

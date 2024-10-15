@@ -47,6 +47,7 @@ import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.CartCard
 import com.example.parcialtp3grupo10.ui.components.CheckoutCard
 import com.example.parcialtp3grupo10.ui.components.Header
+import androidx.compose.ui.platform.LocalConfiguration
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -123,24 +124,45 @@ fun CartScreen(modifier: Modifier, navController: NavController? = null) {
 
 @SuppressLint("UseOfNonLambdaOffsetOverload")
 @Composable
-fun SlideUpPopup(isVisible: Boolean, total: Double, onClose: () -> Unit, modifier: Modifier = Modifier, navController: NavController) {
+fun SlideUpPopup(
+    isVisible: Boolean,
+    total: Double,
+    onClose: () -> Unit,
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
     AnimatedVisibility(
         visible = isVisible,
         enter = slideInVertically(
-            initialOffsetY = { it },
+            initialOffsetY = { it }, // Start from the bottom
             animationSpec = tween(durationMillis = 300)
         ),
         exit = slideOutVertically(
-            targetOffsetY = { it },
+            targetOffsetY = { it }, // Exit towards the bottom
             animationSpec = tween(durationMillis = 300)
         )
     ) {
         Box(
-            modifier = modifier
-                .background(Color.White)
-                .zIndex(2f)
+            modifier = Modifier
+                .fillMaxSize() // Fill the whole screen to support background tint
         ) {
-            CheckoutCard(total, onClose, navController)
+            // Semi-transparent grey background
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color(0x80000000)) // 50% opacity grey background
+            )
+            Box(
+                modifier = modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .wrapContentHeight() // Adjust the height based on CheckoutCard's content
+                    .background(Color.White, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+                    .zIndex(2f)
+            ) {
+                // CheckoutCard content
+                CheckoutCard(total, onClose, navController)
+            }
         }
     }
 }
