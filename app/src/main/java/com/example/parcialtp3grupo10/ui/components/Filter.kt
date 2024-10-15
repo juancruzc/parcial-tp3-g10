@@ -1,12 +1,14 @@
 package com.example.parcialtp3grupo10.ui.components
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -16,31 +18,30 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavController
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterBottomSheet(isOpen: Boolean, onDismiss: () -> Unit) {
+fun FilterBottomSheet(isOpen: Boolean,
+                      onDismiss: () -> Unit,
+                      navController: NavController) {
     var selectedCategories by remember { mutableStateOf(setOf<String>()) }
     var selectedBrands by remember { mutableStateOf(setOf<String>()) }
 
     if (isOpen) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.5f)),
-            contentAlignment = Alignment.Center
-        ) {
+        Dialog(onDismissRequest = onDismiss,
+                properties = DialogProperties(usePlatformDefaultWidth = false) ) {
             Surface(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .padding(16.dp),
-                shape = RoundedCornerShape(16.dp),
-                color = Color.White,
-                border = BorderStroke(2.dp, Color.White)
+                    .fillMaxSize(),
+                color = Color.White
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp)
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -84,7 +85,8 @@ fun FilterBottomSheet(isOpen: Boolean, onDismiss: () -> Unit) {
                     Spacer(modifier = Modifier.height(16.dp))
 
                     Button(
-                        onClick = onDismiss,
+                        onClick = {navController.navigate("search")
+                                  onDismiss()},
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(56.dp),
@@ -115,7 +117,6 @@ fun FilterSection(
         modifier = Modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(8.dp))
-            .background(Color(0xFFF2F3F2))
     ) {
         FilterCheckboxGroup(
             items = items,
@@ -136,10 +137,10 @@ fun FilterCheckboxGroup(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = 2.dp, horizontal = 8.dp),
+                    .padding(vertical = 8.dp, horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Checkbox(
+                RoundedSquareCheckbox(
                     checked = item in selectedItems,
                     onCheckedChange = { checked ->
                         if (checked) {
@@ -147,11 +148,7 @@ fun FilterCheckboxGroup(
                         } else {
                             onItemSelect(selectedItems - item)
                         }
-                    },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = Color(0xFF53B175),
-                        uncheckedColor = Color.LightGray
-                    )
+                    }
                 )
                 Text(
                     text = item,
@@ -159,6 +156,33 @@ fun FilterCheckboxGroup(
                     color = if (item in selectedItems) Color(0xFF53B175) else Color.Black
                 )
             }
+        }
+    }
+}
+
+@Composable
+fun RoundedSquareCheckbox(
+    checked: Boolean,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val shape = RoundedCornerShape(8.dp)
+    Box(
+        modifier = modifier
+            .size(24.dp)
+            .clip(shape)
+            .border(2.dp, if (checked) Color(0xFF53B175) else Color.Gray, shape)
+            .background(if (checked) Color(0xFF53B175) else Color.Transparent)
+            .clickable { onCheckedChange(!checked) },
+        contentAlignment = Alignment.Center
+    ) {
+        if (checked) {
+            Icon(
+                Icons.Default.Check,
+                contentDescription = "Checked",
+                tint = Color.White,
+                modifier = Modifier.size(16.dp)
+            )
         }
     }
 }
