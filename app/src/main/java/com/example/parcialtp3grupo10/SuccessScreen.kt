@@ -46,12 +46,13 @@ fun SuccessScreen(navController: NavController? = null) {
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            text = "Your items have been placed and is on its way to being processed",
+            text = "Your items have been placed and is on it's way to being processed",
             fontSize = 16.sp,
             color = Color.Gray,
             modifier = Modifier.padding(horizontal = 24.dp),
             textAlign = androidx.compose.ui.text.style.TextAlign.Center
         )
+
     }
 
     Column(
@@ -60,9 +61,9 @@ fun SuccessScreen(navController: NavController? = null) {
             .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
-    ) {
+    ){
         ButtonBar("Track Order")
-        BackButtonBar("Back to Home", navController, destination = "home") // Asegúrate de proporcionar el destino correcto
+        BackButtonBar("Back to home", navController)
     }
 }
 
