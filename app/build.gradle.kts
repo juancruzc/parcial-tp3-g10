@@ -74,6 +74,10 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
     implementation("androidx.navigation:navigation-compose:2.6.0")
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    // OkHttp3 logging interceptor
+    implementation (libs.logging.interceptor)
 
     // UI testing libraries
     androidTestImplementation(platform(libs.androidx.compose.bom))

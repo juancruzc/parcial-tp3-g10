@@ -19,13 +19,41 @@ import androidx.compose.ui.res.painterResource
 import com.example.parcialtp3grupo10.R
 import androidx.compose.foundation.Image
 import com.example.parcialtp3grupo10.ui.components.ButtonBar2
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import androidx.compose.ui.platform.LocalContext
+import android.util.Log
+import android.widget.Toast
+import com.example.parcialtp3grupo10.client.LoginResponse
+import com.example.parcialtp3grupo10.client.RetrofitInstance
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavHostController) {
-    var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val context = LocalContext.current
+
+    fun loginUser(username: String, password: String) {
+        val call = RetrofitInstance.api.login(username, password)
+        call.enqueue(object : Callback<LoginResponse> {
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                if (response.isSuccessful) {
+                    val token = response.body()?.token
+                    Log.d("Login", "Token: $token")
+                    navController.navigate("home")
+                } else {
+                    Log.d("Login", "Login fallido")
+                    Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                Log.d("Login", "Error: ${t.message}")
+                Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
 
     Box(
         modifier = Modifier
@@ -41,15 +69,15 @@ fun LoginScreen(navController: NavHostController) {
         ) {
             // Imagen centrada horizontalmente
             Image(
-                painter = painterResource(id = R.drawable.img_3), // Reemplaza con el nombre de tu imagen
+                painter = painterResource(id = R.drawable.img_3),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(50.dp) // Ajusta la altura según sea necesario
-                    .align(Alignment.CenterHorizontally) // Centra la imagen horizontalmente
+                    .height(50.dp)
+                    .align(Alignment.CenterHorizontally)
             )
 
-            Spacer(modifier = Modifier.height(116.dp)) // Espaciado entre la imagen y el título
+            Spacer(modifier = Modifier.height(116.dp))
 
             Text(
                 text = "Sign In",
@@ -59,23 +87,22 @@ fun LoginScreen(navController: NavHostController) {
             )
 
             Text(
-                text = "Enter your email and password",
+                text = "Enter your username and password",
                 fontSize = 16.sp,
                 color = Color.Gray,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
-            // Campo de texto para el correo electrónico
             Text(
-                text = "Email",
+                text = "Username",
                 color = Color.Gray,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(bottom = 4.dp)
             )
             TextField(
-                value = email,
-                onValueChange = { email = it },
+                value = username,
+                onValueChange = { username = it },
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -87,7 +114,6 @@ fun LoginScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Campo de texto para la contraseña
             Text(
                 text = "Password",
                 color = Color.Gray,
@@ -110,59 +136,19 @@ fun LoginScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Texto "Forgot password?" alineado a la derecha
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = "Forgot password?",
-                    color = Color.Black,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-            }
+            ButtonBar2(title = "Log In", onClick = {
+                loginUser(username, password)  // Llamada al login
+            })
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.weight(1f))
 
-            ButtonBar2(title = "Log In", onClick = { navController?.navigate("lastScreen") })
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            // Texto para ir a la pantalla de registro
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = "Don't have an account? ",
-                    color = Color.Black,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(
-                    text = "Sign Up",
-                    color = Color(0xFF53B175),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.clickable {
-                        navController.navigate("register") // Navegar a la pantalla de registro
-                    }
-                )
-            }
-
-            Spacer(modifier = Modifier.weight(1f)) // Este espaciador empuja a img_2 hacia abajo
-
-            // Imagen en la parte inferior
             Image(
-                painter = painterResource(id = R.drawable.img_2), // Reemplaza con el nombre de tu imagen
+                painter = painterResource(id = R.drawable.img_2),
                 contentDescription = null,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(15.dp) // Ajusta la altura según sea necesario
-                    .align(Alignment.CenterHorizontally) // Centra la imagen horizontalmente
+                    .height(15.dp)
+                    .align(Alignment.CenterHorizontally)
             )
         }
     }
