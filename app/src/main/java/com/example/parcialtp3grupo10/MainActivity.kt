@@ -36,7 +36,6 @@ class MainActivity : ComponentActivity() {
                     NavHost(navController = navController, startDestination = "welcome") {
                         composable("welcome") {
                             WelcomeScreen()
-                            // Después de 2 segundos, ir a WelcomeStoreScreen
                             LaunchedEffect(Unit) {
                                 delay(2000)
                                 navController.navigate("welcomeStore")

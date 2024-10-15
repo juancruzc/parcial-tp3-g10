@@ -131,16 +131,15 @@ fun HomeScreen(navController: NavController? = null) {
                             description = product.description,
                             price = product.price,
                             imagePainter,
-                            onAddClick = { /* Handle add */ }
+                            onAddClick = { }
                         )
                     }
                 }
             }
-            // Best Selling Section
             item {
                 SectionHeader(
                     title = "Best Selling",
-                    onSeeAllClick = { /* Handle see all */ }
+                    onSeeAllClick = {  }
                 )
             }
 

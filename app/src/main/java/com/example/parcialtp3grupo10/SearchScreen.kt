@@ -27,15 +27,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.setValue
+import androidx.navigation.NavController
 import com.example.parcialtp3grupo10.model.Product
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.Header
 import com.example.parcialtp3grupo10.ui.components.ProductCard
-import androidx.compose.runtime.setValue
-import androidx.navigation.NavController
-import com.example.parcialtp3grupo10.model.Beverage
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -110,6 +108,7 @@ fun ProductGrid(products: List<Product>, modifier: Modifier = Modifier) {
         }
     }
 }
+
 @Composable
 fun SearchBar(value: String, onValueChange: (String) -> Unit) {
     OutlinedTextField(
@@ -122,27 +121,6 @@ fun SearchBar(value: String, onValueChange: (String) -> Unit) {
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = null) },
         shape = RoundedCornerShape(8.dp)
     )
-}
-
-@Composable
-fun ProductGrid(products: List<Product>) {
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        items(products) { product ->
-            val imagePainter = painterResource(id = product.imageRes)
-            ProductCard(
-                productName = product.name,
-                description = product.description,
-                price = product.price,
-                imagePainter,
-                onAddClick = { /* Handle add */ }
-            )
-        }
-    }
 }
 
 val sampleProducts = listOf(
@@ -161,4 +139,5 @@ val sampleProducts = listOf(
     Product("Organic Bananas", "7pcs, Price", 4.99, R.drawable.banana),
     Product("Red Apple", "1kg, Price", 4.99, R.drawable.apple),
     Product("Ginger", "250g, Price", 4.99, R.drawable.ginger),
-    Product("Bell Pepper Red", "1kg, Price", 4.99, R.drawable.pepper))
+    Product("Bell Pepper Red", "1kg, Price", 4.99, R.drawable.pepper)
+)
