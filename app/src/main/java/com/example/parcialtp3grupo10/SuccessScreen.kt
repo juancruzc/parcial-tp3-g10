@@ -63,7 +63,7 @@ fun SuccessScreen(navController: NavController? = null) {
         verticalArrangement = Arrangement.Bottom
     ){
         ButtonBar("Track Order")
-        BackButtonBar("Back to home", navController)
+        BackButtonBar("Back to home", navController, destination="home")
     }
 }
 
