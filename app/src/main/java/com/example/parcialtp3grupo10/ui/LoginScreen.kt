@@ -8,16 +8,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import androidx.compose.ui.res.painterResource
-import com.example.parcialtp3grupo10.R
 import androidx.compose.foundation.Image
+import com.example.parcialtp3grupo10.R
 import com.example.parcialtp3grupo10.ui.components.ButtonBar2
 import retrofit2.Call
 import retrofit2.Callback
@@ -41,7 +39,7 @@ fun LoginScreen(navController: NavHostController) {
                 if (response.isSuccessful) {
                     val token = response.body()?.token
                     Log.d("Login", "Token: $token")
-                    navController.navigate("home")
+                    navController.navigate("lastScreen")
                 } else {
                     Log.d("Login", "Login fallido")
                     Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show()
@@ -93,16 +91,11 @@ fun LoginScreen(navController: NavHostController) {
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
-            Text(
-                text = "Username",
-                color = Color.Gray,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
+            // Campo de usuario
             TextField(
                 value = username,
                 onValueChange = { username = it },
+                placeholder = { Text("Username") },
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -114,17 +107,12 @@ fun LoginScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = "Password",
-                color = Color.Gray,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 4.dp)
-            )
+            // Campo de contraseña
             TextField(
                 value = password,
                 onValueChange = { password = it },
                 visualTransformation = PasswordVisualTransformation(),
+                placeholder = { Text("Password") },
                 modifier = Modifier.fillMaxWidth(),
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
@@ -136,27 +124,36 @@ fun LoginScreen(navController: NavHostController) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            // Botón para iniciar sesión
             ButtonBar2(title = "Log In", onClick = {
-                loginUser(username, password)  // Llamada al login
+                loginUser(username, password)
             })
 
             Spacer(modifier = Modifier.weight(1f))
 
-            Image(
-                painter = painterResource(id = R.drawable.img_2),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(15.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
+            // Navegación hacia la pantalla de registro
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Don't have an account? ",
+                    color = Color.Black,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Text(
+                    text = "Register",
+                    color = Color(0xFF53B175),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clickable {
+                        navController.navigate("register")
+                    }
+                )
+            }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun LoginScreenPreview() {
-    val navController = rememberNavController()
-    LoginScreen(navController = navController)
 }
