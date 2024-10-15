@@ -31,7 +31,10 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.parcialtp3grupo10.R
 import com.example.parcialtp3grupo10.model.Beverage
+import com.example.parcialtp3grupo10.model.Product
+import com.example.parcialtp3grupo10.ui.components.ProductCard
 import com.example.parcialtp3grupo10.ui.theme.ParcialTP3Grupo10Theme
 
 @Composable
@@ -42,6 +45,14 @@ fun BeverageScreen(
 ) {
     val beverages by viewModel.beverages.observeAsState(emptyList())
 
+    val productsTwo = listOf(
+        Product("Coca Cola", "325ml", 4.99, R.drawable.coca_cola_can),
+        Product("Diet Coke", "325ml", 1.50, R.drawable.diet_coke),
+        Product("Pepsi", "330ml", 4.99, R.drawable.pepsi_can),
+        Product("Sprite", "325ml", 1.50, R.drawable.sprite_can),
+        Product("Apple Grape Juice", "2L", 15.99, R.drawable.apple_grape_juice),
+        Product("Orange Juice", "250g, Priceg", 4.99, R.drawable.orange_juice),
+        )
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -70,7 +81,7 @@ fun BeverageScreen(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            items(beverages) { beverage ->
+            items(productsTwo) { beverage ->
                 BeverageItem(beverage)
             }
         }
@@ -78,91 +89,15 @@ fun BeverageScreen(
 }
 
 @Composable
-fun BeverageItem(beverage: Beverage) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth(0.45f)  // Mantener el 45% del ancho
-            .padding(8.dp)
-            .height(220.dp),  // Fijar altura mínima para todas las tarjetas
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        shape = RoundedCornerShape(16.dp),
-        border = BorderStroke(1.dp, Color(0xFFE2E2E2)),
-        colors = CardDefaults.cardColors(containerColor = Color.White)
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceBetween,
-            horizontalAlignment = Alignment.Start
-        ) {
-            // Imagen de la bebida
-            Image(
-                painter = painterResource(id = beverage.imageRes),
-                contentDescription = beverage.name,
-                contentScale = ContentScale.Fit,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(110.dp)  // Tamaño uniforme de la imagen para todas las bebidas
-            )
-
-            // Nombre de la bebida
-            Text(
-                text = beverage.name,
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp,
-                    letterSpacing = 0.01.em,
-                    color = Color(0xFF181725)
-                ),
-                textAlign = TextAlign.Left,
-                maxLines = 1,  // Limitar a 1 línea
-                overflow = TextOverflow.Ellipsis  // Asegurarse de que no haya desbordamiento
-            )
-
-            // Información del volumen
-            Text(
-                text = "${beverage.volume}, Price",
-                style = MaterialTheme.typography.bodyMedium.copy(
-                    color = Color.Gray,
-                    fontSize = 14.sp
-                ),
-                textAlign = TextAlign.Left
-            )
-
-            // Fila para precio y botón "+"
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween // Asegurar alineación
-            ) {
-                // Precio
-                Text(
-                    text = "$${beverage.price}",
-                    style = MaterialTheme.typography.titleLarge.copy(
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        letterSpacing = 0.01.em,
-                        color = Color(0xFF181725)
-                    )
-                )
-
-                // Botón "+"
-                IconButton(
-                    onClick = { /* Acción del botón */ },
-                    modifier = Modifier
-                        .size(42.dp) // Tamaño uniforme del botón
-                        .background(Color(0xFF53B175), shape = CircleShape)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Add",
-                        tint = Color.White
-                    )
-                }
-            }
-        }
-    }
+fun BeverageItem(product: Product) {
+    val imagePainter = painterResource(id = product.imageRes)
+    ProductCard(
+        productName = product.name,
+        description = product.description,
+        price = product.price,
+        imagePainter,
+        onAddClick = { /* Handle add */ }
+    )
 }
 
 
