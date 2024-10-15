@@ -62,6 +62,9 @@ dependencies {
     // Use BOM for Compose versions
     implementation(platform(libs.androidx.compose.bom))
 
+
+   
+
     // Compose libraries
     implementation("androidx.compose.material3:material3:1.1.0")
     implementation("androidx.compose.material:material:1.7.3") // Usa la versión más reciente

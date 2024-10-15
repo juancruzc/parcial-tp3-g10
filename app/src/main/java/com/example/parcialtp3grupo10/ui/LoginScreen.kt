@@ -140,6 +140,27 @@ fun LoginScreen(navController: NavHostController) {
                 loginUser(username, password)  // Llamada al login
             })
 
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Texto para Signup
+            Row(
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                Text(
+                    text = "Don’t have an account? ",
+                    color = Color.Gray,
+                    fontSize = 16.sp
+                )
+                Text(
+                    text = "Signup",
+                    color = Color(0xFF53B175), // Color verde
+                    fontSize = 16.sp,
+                    modifier = Modifier.clickable {
+                        navController.navigate("register") // Navega a la pantalla de registro
+                    }
+                )
+            }
+
             Spacer(modifier = Modifier.weight(1f))
 
             Image(
