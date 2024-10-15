@@ -70,6 +70,9 @@ class MainActivity : ComponentActivity() {
                         composable("success") {
                             SuccessScreen(navController)
                         }
+                        composable("search") {
+                            SearchScreen(navController)
+                        }
                     }
                 }
             }
