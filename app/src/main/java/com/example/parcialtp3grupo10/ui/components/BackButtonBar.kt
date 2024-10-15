@@ -1,5 +1,4 @@
 package com.example.parcialtp3grupo10.ui.components
-
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,15 +14,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.parcialtp3grupo10.HomeScreen
+
 
 @Composable
-fun BackButtonBar(title: String, navController: NavController? = null) {
+fun BackButtonBar(
+    title: String,
+    navController: NavController? = null,
+    destination: String // Asegúrate de tener este parámetro
+) {
     Button(
         onClick = {
-            if (navController != null) {
-                navController.navigate("home")
-            }
+            navController?.navigate(destination)
         },
         modifier = Modifier
             .fillMaxWidth()
@@ -40,6 +41,6 @@ fun BackButtonBar(title: String, navController: NavController? = null) {
 @Composable
 fun BackButtonBarPreview() {
     MaterialTheme {
-        BackButtonBar("Back to home")
+        BackButtonBar("Back to Login", destination = "login")
     }
 }
