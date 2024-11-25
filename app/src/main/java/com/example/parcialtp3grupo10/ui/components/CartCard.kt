@@ -43,6 +43,7 @@ fun CartCard(
     description: String,
     price: Double,
     imagePainter: Painter,
+    onRemove:()-> Unit,
     modifier: Modifier = Modifier
 ) {
     var quantity by remember { mutableStateOf(1) }
@@ -158,7 +159,8 @@ fun CartCardPreview() {
             productName = "Apple",
             description = "Fresh Red Apple",
             price = 1.99,
-            imagePainter = imagePainter
+            imagePainter = imagePainter,
+            onRemove = {}
         )
     }
 }

@@ -1,61 +1,58 @@
 package com.example.parcialtp3grupo10
 
-import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.parcialtp3grupo10.model.Product
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.CartCard
-import com.example.parcialtp3grupo10.ui.components.CheckoutCard
 import com.example.parcialtp3grupo10.ui.components.Header
+import com.example.parcialtp3grupo10.ui.components.SlideUpPopup
+import com.example.parcialtp3grupo10.viewmodel.CartViewModel
+import com.example.parcialtp3grupo10.viewmodel.OrderState
 
 @Composable
-fun CartScreen(modifier: Modifier, navController: NavController? = null) {
-
+fun CartScreen(modifier: Modifier = Modifier, navController: NavController? = null) {
+    val viewModel: CartViewModel = viewModel()
+    val cartState by viewModel.cartState.collectAsState()
+    val orderState by viewModel.orderState.collectAsState()
     var showOverlay by remember { mutableStateOf(false) }
-    var total by remember { mutableDoubleStateOf(0.0) }
+    val context = LocalContext.current
+
+    // Efecto para cargar productos de ejemplo
+    LaunchedEffect(Unit) {
+        viewModel.loadSampleProducts()
+    }
+
+    // Observar el estado de la orden
+    LaunchedEffect(orderState) {
+        when (orderState) {
+            is OrderState.Success -> {
+                Toast.makeText(context, "Orden completada con éxito", Toast.LENGTH_SHORT).show()
+                navController?.navigate("success")
+            }
+            is OrderState.Error -> {
+                Toast.makeText(context, (orderState as OrderState.Error).message, Toast.LENGTH_LONG).show()
+            }
+            else -> {} // No hacer nada para otros estados
+        }
+    }
 
     Scaffold(
         topBar = {
-            Header("My cart")
+            Header("Mi Carrito")
             HorizontalDivider(color = Color(0xFFB3B3B3), thickness = 1.dp)
         },
         bottomBar = {
@@ -64,99 +61,83 @@ fun CartScreen(modifier: Modifier, navController: NavController? = null) {
             }
         }
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.White)
-                .padding(innerPadding),
-            verticalArrangement = Arrangement.SpaceBetween
-        ) {
-            val productsOne = listOf(
-                Product("Organic Bananas", "7pcs, Price", 4.99, R.drawable.banana),
-                Product("Red Apple", "1kg, Price", 4.99, R.drawable.apple),
-            )
-
-            LazyColumn(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp)
-            ) {
-                items(productsOne) { product ->
-                    val imagePainter = painterResource(id = product.imageRes)
-                    CartCard(
-                        productName = product.name,
-                        description = product.description,
-                        price = product.price,
-                        imagePainter
-                    )
-                }
-            }
-
-            total = productsOne.sumOf { it.price }
-            CheckoutButton(total.toString(), onClick = { showOverlay = true })
-        }
-
-        if (showOverlay) {
-            Box(
-                modifier = Modifier
-                    .background(Color(0x80000000))
-                    .zIndex(1f)
-            ) {
-                if (navController != null) {
-                    SlideUpPopup(
-                        isVisible = showOverlay,
-                        onClose = { showOverlay = false },
-                        total = total,
-                        modifier = modifier
-                            .align(Alignment.BottomCenter)
-                            .fillMaxWidth()
-                            .wrapContentHeight()
-                            .padding(bottom = 16.dp),
-                        navController = navController
-                    )
-                }
-            }
-        }
-    }
-}
-
-@SuppressLint("UseOfNonLambdaOffsetOverload")
-@Composable
-fun SlideUpPopup(
-    isVisible: Boolean,
-    total: Double,
-    onClose: () -> Unit,
-    modifier: Modifier = Modifier,
-    navController: NavController
-) {
-    AnimatedVisibility(
-        visible = isVisible,
-        enter = slideInVertically(
-            initialOffsetY = { it },
-            animationSpec = tween(durationMillis = 300)
-        ),
-        exit = slideOutVertically(
-            targetOffsetY = { it },
-            animationSpec = tween(durationMillis = 300)
-        )
-    ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(innerPadding)
         ) {
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0x80000000))
-            )
-            Box(
-                modifier = modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .wrapContentHeight()
-                    .background(Color.White, RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
-                    .zIndex(2f)
+                    .background(Color.White),
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
-                CheckoutCard(total, onClose, navController)
+                LazyColumn(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
+                    items(cartState.items) { product ->
+                        val imagePainter = painterResource(id = product.imageRes)
+                        CartCard(
+                            productName = product.name,
+                            description = product.description,
+                            price = product.price,
+                            imagePainter = imagePainter,
+                            onRemove = { viewModel.removeFromCart(product) }
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                }
+
+                CheckoutButton(
+                    totalPrice = cartState.total.toString(),
+                    onClick = {
+                        if (cartState.items.isNotEmpty()) {
+                            showOverlay = true
+                        } else {
+                            Toast.makeText(context, "El carrito está vacío", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                )
+            }
+
+            // Overlay para el checkout
+            if (showOverlay) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color(0x80000000))
+                        .zIndex(1f)
+                ) {
+                    if (navController != null) {
+                        SlideUpPopup(
+                            isVisible = showOverlay,
+                            onClose = { showOverlay = false },
+                            total = cartState.total,
+                            modifier = Modifier
+                                .align(Alignment.BottomCenter)
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(bottom = 16.dp),
+                            navController = navController,
+                            onCheckout = {
+                                viewModel.checkout()
+                                showOverlay = false
+                            }
+                        )
+                    }
+                }
+            }
+
+            // Loading indicator
+            if (orderState is OrderState.Loading) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .zIndex(2f)
+                )
             }
         }
     }
@@ -165,13 +146,13 @@ fun SlideUpPopup(
 @Composable
 fun CheckoutButton(totalPrice: String, onClick: () -> Unit) {
     Button(
-        onClick = onClick ,
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .height(95.dp)
             .padding(16.dp),
-        shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(Color(0xFF53B175)),
+        shape = MaterialTheme.shapes.medium,
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF53B175))
     ) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -183,35 +164,17 @@ fun CheckoutButton(totalPrice: String, onClick: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Go to Checkout",
+                    text = "Ir al Checkout",
                     color = Color.White,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(end = 24.dp)
+                    style = MaterialTheme.typography.bodyLarge
                 )
-            }
-
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .background(Color(0xFF37915F), RoundedCornerShape(12.dp))
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            ) {
+                Spacer(modifier = Modifier.width(8.dp))
                 Text(
                     text = "$$totalPrice",
                     color = Color.White,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun CartScreenPreview() {
-    MaterialTheme {
-        CartScreen(modifier = Modifier)
     }
 }

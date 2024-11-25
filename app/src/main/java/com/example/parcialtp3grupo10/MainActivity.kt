@@ -21,10 +21,27 @@ import com.example.parcialtp3grupo10.ui.FifthScreen
 import com.example.parcialtp3grupo10.ui.FindProductsScreen
 import com.example.parcialtp3grupo10.ui.theme.ParcialTP3Grupo10Theme
 import kotlinx.coroutines.delay
+import com.google.firebase.FirebaseApp
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.initialize
+import android.util.Log
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        try {
+            if (FirebaseApp.getApps(this).isEmpty()) {
+                FirebaseApp.initializeApp(this)
+                Log.d("Firebase", "Firebase initialized successfully")
+            } else {
+                Log.d("Firebase", "Firebase was already initialized")
+            }
+        } catch (e: Exception) {
+            Log.e("Firebase", "Error initializing Firebase: ${e.message}")
+            e.printStackTrace()
+        }
+
         setContent {
             ParcialTP3Grupo10Theme {
                 val navController: NavHostController = rememberNavController()
@@ -68,7 +85,7 @@ class MainActivity : ComponentActivity() {
                         composable("account") {
                             AccountScreen(navController)
                         }
-                        composable("beverages") {  // Agregar la pantalla de Beverages
+                        composable("beverages") {
                             BeverageScreen(navController = navController)
                         }
                         composable("success") {

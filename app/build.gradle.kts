@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -55,40 +56,37 @@ android {
 }
 
 dependencies {
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.firebase:firebase-common-ktx")
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
 
-    // Use BOM for Compose versions
     implementation(platform(libs.androidx.compose.bom))
-
-
-   
-
-    // Compose libraries
     implementation("androidx.compose.material3:material3:1.1.0")
-    implementation("androidx.compose.material:material:1.7.3") // Usa la versión más reciente
+    implementation("androidx.compose.material:material:1.7.3")
     implementation("androidx.compose.material3:material3:1.3.0")
     implementation("androidx.compose.ui:ui:1.7.3")
     implementation("androidx.compose.ui:ui-tooling:1.7.3")
     implementation("androidx.compose.ui:ui-tooling-preview:1.7.3")
-    implementation("androidx.compose.material:material-icons-extended:1.7.3") // Asegúrate de que la versión sea correcta
+    implementation("androidx.compose.material:material-icons-extended:1.7.3")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.6")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.6")
     implementation("androidx.navigation:navigation-compose:2.6.0")
+
     implementation(libs.androidx.runtime.livedata)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-    // OkHttp3 logging interceptor
-    implementation (libs.logging.interceptor)
+    implementation(libs.logging.interceptor)
 
-    // UI testing libraries
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Unit testing libraries
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
