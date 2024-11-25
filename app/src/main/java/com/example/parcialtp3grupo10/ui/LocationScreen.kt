@@ -19,6 +19,7 @@ import com.example.parcialtp3grupo10.ui.components.TopLeftImage
 import com.example.parcialtp3grupo10.ui.components.TopFullWidthImage
 import com.example.parcialtp3grupo10.ui.components.BottomCenteredImage
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FifthScreen(navController: NavHostController) {
