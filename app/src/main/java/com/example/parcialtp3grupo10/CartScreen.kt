@@ -33,7 +33,7 @@ fun CartScreen(modifier: Modifier = Modifier, navController: NavController? = nu
 
     // Efecto para cargar productos de ejemplo
     LaunchedEffect(Unit) {
-        viewModel.loadSampleProducts()
+        viewModel.loadSampleProducts(context)
     }
 
     // Observar el estado de la orden

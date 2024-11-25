@@ -1,13 +1,12 @@
 package com.example.parcialtp3grupo10.viewmodel
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.parcialtp3grupo10.R
 import com.example.parcialtp3grupo10.model.Order
 import com.example.parcialtp3grupo10.model.OrderItem
 import com.example.parcialtp3grupo10.model.Product
-import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -40,6 +39,7 @@ class CartViewModel : ViewModel() {
     }
 
     private val ordersCollection by lazy { db?.collection("orders") }
+    private val itemsCollection by lazy { db?.collection("cart") }
 
     private val _orderState = MutableStateFlow<OrderState>(OrderState.Initial)
     val orderState: StateFlow<OrderState> = _orderState.asStateFlow()
@@ -122,8 +122,8 @@ class CartViewModel : ViewModel() {
         }
     }
 
-    fun loadSampleProducts() {
-        val sampleProducts = listOf(
+    fun loadSampleProducts(context: Context) {
+        /*val sampleProducts = listOf(
             Product(
                 name = "Organic Bananas",
                 description = "7pcs, Price",
@@ -136,10 +136,33 @@ class CartViewModel : ViewModel() {
                 price = 4.99,
                 imageRes = R.drawable.apple
             )
-        )
+        )*/
 
-        viewModelScope.launch {
-            sampleProducts.forEach { addToCart(it) }
+        itemsCollection?.get()?.addOnSuccessListener { documents ->
+            val itemsList = mutableListOf<Product>()
+
+            for (item in documents) {
+                val name = item.getString("name") ?: ""
+                val description = item.getString("description") ?: ""
+                val price = item.getString("price")?.toDoubleOrNull() ?: 0.0
+
+                val imageResName = item.getString("imageRes") ?: ""
+                val imageRes = try {
+                    context.resources.getIdentifier(imageResName, "drawable", context.packageName)
+                } catch (e: Exception) {
+                    Log.e("Firestore", "Error resolving image resource: ${e.message}")
+                    0
+                }
+
+                val product = Product(name, description, price, imageRes)
+                itemsList.add(product)
+            }
+
+            viewModelScope.launch {
+                updateCartState(itemsList)
+            }
+        }?.addOnFailureListener { exception ->
+            Log.e("Firestore", "Error loading products: ${exception.message}")
         }
     }
 }
