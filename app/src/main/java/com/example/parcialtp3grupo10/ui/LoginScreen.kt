@@ -17,45 +17,51 @@ import androidx.navigation.NavHostController
 import androidx.compose.foundation.Image
 import com.example.parcialtp3grupo10.R
 import com.example.parcialtp3grupo10.ui.components.ButtonBar2
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import androidx.compose.ui.platform.LocalContext
-import android.util.Log
 import android.widget.Toast
-import com.example.parcialtp3grupo10.client.LoginResponse
-import com.example.parcialtp3grupo10.client.RetrofitInstance
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.parcialtp3grupo10.viewmodel.LoginViewModel
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(navController: NavHostController, loginViewModel: LoginViewModel = hiltViewModel()) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val context = LocalContext.current
 
-    fun loginUser(username: String, password: String) {
-        val call = RetrofitInstance.api.login(username, password)
-        call.enqueue(object : Callback<LoginResponse> {
-            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                if (response.isSuccessful) {
-                    val token = response.body()?.token
-                    Log.d("Login", "Token: $token")
-                    navController.navigate("lastScreen")
-                } else {
-                    Log.d("Login", "Login fallido")
-                    Toast.makeText(context, "Login failed", Toast.LENGTH_SHORT).show()
+    Column(
+        modifier = Modifier.fillMaxSize().padding(16.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextField(
+            value = username,
+            onValueChange = { username = it },
+            label = { Text("Username") }
+        )
+        TextField(
+            value = password,
+            onValueChange = { password = it },
+            label = { Text("Password") },
+            visualTransformation = PasswordVisualTransformation()
+        )
+        Button(onClick = {
+            loginViewModel.loginUser(
+                username = username,
+                password = password,
+                onSuccess = { navController.navigate("lastScreen") },
+                onError = { error ->
+                    Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
                 }
-            }
-
-            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                Log.d("Login", "Error: ${t.message}")
-                Toast.makeText(context, "Error de conexión", Toast.LENGTH_SHORT).show()
-            }
-        })
+            )
+        }) {
+            Text("Login")
+        }
     }
 
-    Box(
+
+Box(
         modifier = Modifier
             .fillMaxSize()
             .background(Color.White),
@@ -128,7 +134,14 @@ fun LoginScreen(navController: NavHostController) {
 
             // Botón para iniciar sesión
             ButtonBar2(title = "Log In", onClick = {
-                loginUser(username, password)
+                loginViewModel.loginUser(
+                    username = username,
+                    password = password,
+                    onSuccess = { navController.navigate("lastScreen") },
+                    onError = { error ->
+                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+                    }
+                )
             })
 
             Spacer(modifier = Modifier.height(16.dp))
