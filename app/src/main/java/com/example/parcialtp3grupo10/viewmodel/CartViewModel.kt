@@ -79,7 +79,7 @@ class CartViewModel : ViewModel() {
         val items = _cartState.value.items.map { product ->
             OrderItem(
                 productName = product.name,
-                quantity = 1,
+                quantity = product.quantity,
                 price = product.price
             )
         }
@@ -168,18 +168,15 @@ class CartViewModel : ViewModel() {
         }
     }
 
-    // Adjust addItemToCart to handle quantity
     fun addItemToCart(product: Product) {
         viewModelScope.launch {
             val currentItems = _cartState.value.items.toMutableList()
             val index = currentItems.indexOfFirst { it == product }
 
             if (index != -1) {
-                // Increment quantity if item already exists
                 val updatedItem = currentItems[index].copy(quantity = currentItems[index].quantity + 1)
                 currentItems[index] = updatedItem
             } else {
-                // Add new item
                 currentItems.add(product)
             }
 
@@ -187,7 +184,6 @@ class CartViewModel : ViewModel() {
         }
     }
 
-    // New method to decrement quantity or remove item
     fun removeItemQuantity(product: Product) {
         viewModelScope.launch {
             val currentItems = _cartState.value.items.toMutableList()
@@ -196,10 +192,8 @@ class CartViewModel : ViewModel() {
             if (index != -1) {
                 val currentItem = currentItems[index]
                 if (currentItem.quantity > 1) {
-                    // Decrease quantity
                     currentItems[index] = currentItem.copy(quantity = currentItem.quantity - 1)
                 } else {
-                    // Remove item if quantity becomes 0
                     currentItems.removeAt(index)
                 }
             }
@@ -208,11 +202,10 @@ class CartViewModel : ViewModel() {
         }
     }
 
-    // Reuse this private method to update the cart state and recalculate the total
     private fun updateCartState(items: List<Product>) {
         _cartState.value = CartState(
             items = items,
-            total = items.sumOf { it.price * it.quantity }
+            total = items.sumOf { Math.round((it.price * it.quantity) * 100.0) / 100.0}
         )
     }
 }
