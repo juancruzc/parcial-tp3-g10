@@ -43,7 +43,9 @@ fun CartCard(
     description: String,
     price: Double,
     imagePainter: Painter,
-    onRemove:()-> Unit,
+    onIncrease: () -> Unit,
+    onDecrease: () -> Unit,
+    onRemove: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var quantity by remember { mutableStateOf(1) }
@@ -96,7 +98,10 @@ fun CartCard(
                         .padding(start = 12.dp),
                 ) {
                     IconButton(
-                        onClick = { if (quantity > 1) quantity-- },
+                        onClick = { if (quantity > 1) {
+                            quantity--
+                            onDecrease()
+                        } },
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.minus),
@@ -114,7 +119,7 @@ fun CartCard(
                     )
 
                     IconButton(
-                        onClick = { quantity++ },
+                        onClick = { quantity++; onIncrease() },
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.plus),
@@ -129,15 +134,19 @@ fun CartCard(
 
             Column(
                 horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(15.dp)
+                verticalArrangement = Arrangement.spacedBy(10.dp)
             ){
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = "Remove form cart",
-                    tint = Color(0xFFB3B3B3),
-                    modifier = Modifier
-                        .size(18.dp)
-                )
+                IconButton(
+                    onClick = onRemove
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Close,
+                        contentDescription = "Remove form cart",
+                        tint = Color(0xFFB3B3B3),
+                        modifier = Modifier
+                            .size(18.dp)
+                    )
+                }
 
                 Text(
                     text = "$${String.format("%.2f", price)}",
@@ -160,7 +169,9 @@ fun CartCardPreview() {
             description = "Fresh Red Apple",
             price = 1.99,
             imagePainter = imagePainter,
-            onRemove = {}
+            onIncrease = {},
+            onDecrease = {},
+            onRemove = {},
         )
     }
 }

@@ -62,7 +62,7 @@ class CartViewModel : ViewModel() {
             updateCartState(currentItems)
         }
     }
-
+    /*
     private fun updateCartState(items: List<Product>) {
         val total = calculateTotal(items)
         _cartState.value = CartState(
@@ -70,7 +70,7 @@ class CartViewModel : ViewModel() {
             total = total
         )
     }
-
+    */
     private fun calculateTotal(items: List<Product>): Double {
         return items.sumOf { it.price }
     }
@@ -154,7 +154,9 @@ class CartViewModel : ViewModel() {
                     0
                 }
 
-                val product = Product(name, description, price, imageRes)
+                val quantity = item.getString("quantity")?.toInt() ?: 1
+
+                val product = Product(name, description, price, imageRes, quantity)
                 itemsList.add(product)
             }
 
@@ -164,6 +166,54 @@ class CartViewModel : ViewModel() {
         }?.addOnFailureListener { exception ->
             Log.e("Firestore", "Error loading products: ${exception.message}")
         }
+    }
+
+    // Adjust addItemToCart to handle quantity
+    fun addItemToCart(product: Product) {
+        viewModelScope.launch {
+            val currentItems = _cartState.value.items.toMutableList()
+            val index = currentItems.indexOfFirst { it == product }
+
+            if (index != -1) {
+                // Increment quantity if item already exists
+                val updatedItem = currentItems[index].copy(quantity = currentItems[index].quantity + 1)
+                currentItems[index] = updatedItem
+            } else {
+                // Add new item
+                currentItems.add(product)
+            }
+
+            updateCartState(currentItems)
+        }
+    }
+
+    // New method to decrement quantity or remove item
+    fun removeItemQuantity(product: Product) {
+        viewModelScope.launch {
+            val currentItems = _cartState.value.items.toMutableList()
+            val index = currentItems.indexOfFirst { it == product }
+
+            if (index != -1) {
+                val currentItem = currentItems[index]
+                if (currentItem.quantity > 1) {
+                    // Decrease quantity
+                    currentItems[index] = currentItem.copy(quantity = currentItem.quantity - 1)
+                } else {
+                    // Remove item if quantity becomes 0
+                    currentItems.removeAt(index)
+                }
+            }
+
+            updateCartState(currentItems)
+        }
+    }
+
+    // Reuse this private method to update the cart state and recalculate the total
+    private fun updateCartState(items: List<Product>) {
+        _cartState.value = CartState(
+            items = items,
+            total = items.sumOf { it.price * it.quantity }
+        )
     }
 }
 

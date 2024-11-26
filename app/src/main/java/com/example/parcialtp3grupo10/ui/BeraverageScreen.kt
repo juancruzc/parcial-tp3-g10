@@ -46,12 +46,12 @@ fun BeverageScreen(
     val beverages by viewModel.beverages.observeAsState(emptyList())
 
     val productsTwo = listOf(
-        Product("Coca Cola", "325ml", 4.99, R.drawable.coca_cola_can),
-        Product("Diet Coke", "325ml", 1.50, R.drawable.diet_coke),
-        Product("Pepsi", "330ml", 4.99, R.drawable.pepsi_can),
-        Product("Sprite", "325ml", 1.50, R.drawable.sprite_can),
-        Product("Apple Grape Juice", "2L", 15.99, R.drawable.apple_grape_juice),
-        Product("Orange Juice", "250g", 4.99, R.drawable.orange_juice),
+        Product("Coca Cola", "325ml", 4.99, R.drawable.coca_cola_can,1),
+        Product("Diet Coke", "325ml", 1.50, R.drawable.diet_coke,1),
+        Product("Pepsi", "330ml", 4.99, R.drawable.pepsi_can,1),
+        Product("Sprite", "325ml", 1.50, R.drawable.sprite_can,1),
+        Product("Apple Grape Juice", "2L", 15.99, R.drawable.apple_grape_juice,1),
+        Product("Orange Juice", "250g", 4.99, R.drawable.orange_juice,1),
         )
     Column(
         modifier = modifier

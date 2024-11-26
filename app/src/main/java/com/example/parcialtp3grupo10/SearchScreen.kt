@@ -124,20 +124,20 @@ fun SearchBar(value: String, onValueChange: (String) -> Unit) {
 }
 
 val sampleProducts = listOf(
-    Product("Egg Chicken Red", "6pcs, Price", 1.99, R.drawable.egg_chicken_red),
-    Product("Egg Chicken White", "180g, Price", 1.50, R.drawable.egg_chicken_white),
-    Product("Egg Pasta", "30gm, Price", 15.99, R.drawable.egg_pasta),
-    Product("Egg Noodles", "2x, Price", 15.99, R.drawable.egg_noodles),
-    Product("Egg Noodles", "2x, Price", 15.99, R.drawable.egg_noodles_2),
-    Product("Egg Mayonnaise", "2x, Price", 15.99, R.drawable.mayonaisse),
-    Product("Diet Coke", "355ml", 1.99, R.drawable.diet_coke),
-    Product("Sprite Can", "325ml", 1.50, R.drawable.sprite_can),
-    Product("Apple & Grape Juice", "2L", 15.99, R.drawable.apple_grape_juice),
-    Product("Orange Juice", "2L", 15.99, R.drawable.orange_juice),
-    Product("Coca Cola Can", "325ml", 4.99, R.drawable.coca_cola_can),
-    Product("Pepsi Can", "330ml", 4.99, R.drawable.pepsi_can),
-    Product("Organic Bananas", "7pcs, Price", 4.99, R.drawable.banana),
-    Product("Red Apple", "1kg, Price", 4.99, R.drawable.apple),
-    Product("Ginger", "250g, Price", 4.99, R.drawable.ginger),
-    Product("Bell Pepper Red", "1kg, Price", 4.99, R.drawable.pepper)
+    Product("Egg Chicken Red", "6pcs, Price", 1.99, R.drawable.egg_chicken_red,1),
+    Product("Egg Chicken White", "180g, Price", 1.50, R.drawable.egg_chicken_white,1),
+    Product("Egg Pasta", "30gm, Price", 15.99, R.drawable.egg_pasta,1),
+    Product("Egg Noodles", "2x, Price", 15.99, R.drawable.egg_noodles,1),
+    Product("Egg Noodles", "2x, Price", 15.99, R.drawable.egg_noodles_2,1),
+    Product("Egg Mayonnaise", "2x, Price", 15.99, R.drawable.mayonaisse,1),
+    Product("Diet Coke", "355ml", 1.99, R.drawable.diet_coke,1),
+    Product("Sprite Can", "325ml", 1.50, R.drawable.sprite_can,1),
+    Product("Apple & Grape Juice", "2L", 15.99, R.drawable.apple_grape_juice,1),
+    Product("Orange Juice", "2L", 15.99, R.drawable.orange_juice,1),
+    Product("Coca Cola Can", "325ml", 4.99, R.drawable.coca_cola_can,1),
+    Product("Pepsi Can", "330ml", 4.99, R.drawable.pepsi_can,1),
+    Product("Organic Bananas", "7pcs, Price", 4.99, R.drawable.banana,1),
+    Product("Red Apple", "1kg, Price", 4.99, R.drawable.apple,1),
+    Product("Ginger", "250g, Price", 4.99, R.drawable.ginger,1),
+    Product("Bell Pepper Red", "1kg, Price", 4.99, R.drawable.pepper,1)
 )

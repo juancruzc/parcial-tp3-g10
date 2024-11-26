@@ -85,7 +85,9 @@ fun CartScreen(modifier: Modifier = Modifier, navController: NavController? = nu
                             description = product.description,
                             price = product.price,
                             imagePainter = imagePainter,
-                            onRemove = { viewModel.removeFromCart(product) }
+                            onRemove = { viewModel.removeFromCart(product) },
+                            onIncrease = { viewModel.addItemToCart(product) },
+                            onDecrease = { viewModel.removeItemQuantity(product) }
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                     }

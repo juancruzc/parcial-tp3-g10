@@ -111,13 +111,14 @@ fun HomeScreen(navController: NavController? = null) {
                 )
             }
             val productsOne = listOf(
-                Product("Organic Bananas", "7pcs, Priceg", 4.99, R.drawable.banana),
-                Product("Red Apple", "1kg, Priceg", 4.99, R.drawable.apple),
+                Product("Organic Bananas", "7pcs, Priceg", 4.99, R.drawable.banana,1),
+                Product("Red Apple", "1kg, Priceg", 4.99, R.drawable.apple,1),
                 Product(
                     "Ginger",
                     "250g, Priceg",
                     4.99,
-                    R.drawable.ginger
+                    R.drawable.ginger,
+                    1
                 )
             )
             item {
@@ -144,13 +145,14 @@ fun HomeScreen(navController: NavController? = null) {
             }
 
             val productsTwo = listOf(
-                Product("Bell Pepper Red", "1kg, Priceg", 4.99, R.drawable.pepper),
-                Product("Ginger", "250g, Priceg", 4.99, R.drawable.ginger),
+                Product("Bell Pepper Red", "1kg, Priceg", 4.99, R.drawable.pepper,1),
+                Product("Ginger", "250g, Priceg", 4.99, R.drawable.ginger,1),
                 Product(
                     "Ginger",
                     "250g, Priceg",
                     4.99,
-                    R.drawable.ginger
+                    R.drawable.ginger,
+                    1
                 )
             )
             item {

@@ -3,7 +3,8 @@ package com.example.parcialtp3grupo10.model
 data class OrderItem(
     val productName: String,
     val quantity: Int,
-    val price: Double
+    val price: Double,
+    val subtotal: Double = price * quantity
 )
 
 data class Order(
