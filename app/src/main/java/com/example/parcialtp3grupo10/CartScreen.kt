@@ -20,6 +20,7 @@ import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
 import com.example.parcialtp3grupo10.ui.components.CartCard
 import com.example.parcialtp3grupo10.ui.components.Header
 import com.example.parcialtp3grupo10.ui.components.SlideUpPopup
+import com.example.parcialtp3grupo10.ui.components.CheckoutCard
 import com.example.parcialtp3grupo10.viewmodel.CartViewModel
 import com.example.parcialtp3grupo10.viewmodel.OrderState
 
@@ -31,12 +32,11 @@ fun CartScreen(modifier: Modifier = Modifier, navController: NavController? = nu
     var showOverlay by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
-    // Efecto para cargar productos de ejemplo
     LaunchedEffect(Unit) {
         viewModel.loadSampleProducts(context)
     }
 
-    // Observar el estado de la orden
+
     LaunchedEffect(orderState) {
         when (orderState) {
             is OrderState.Success -> {
@@ -46,7 +46,7 @@ fun CartScreen(modifier: Modifier = Modifier, navController: NavController? = nu
             is OrderState.Error -> {
                 Toast.makeText(context, (orderState as OrderState.Error).message, Toast.LENGTH_LONG).show()
             }
-            else -> {} // No hacer nada para otros estados
+            else -> {}
         }
     }
 
@@ -105,7 +105,7 @@ fun CartScreen(modifier: Modifier = Modifier, navController: NavController? = nu
                 )
             }
 
-            // Overlay para el checkout
+
             if (showOverlay) {
                 Box(
                     modifier = Modifier
@@ -133,7 +133,6 @@ fun CartScreen(modifier: Modifier = Modifier, navController: NavController? = nu
                 }
             }
 
-            // Loading indicator
             if (orderState is OrderState.Loading) {
                 CircularProgressIndicator(
                     modifier = Modifier
