@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
@@ -17,6 +18,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -59,18 +61,28 @@ fun FindProductsScreen(navController: NavController, toggleDarkMode: () -> Unit,
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.surface
-                ),
                 actions = {
-                    IconButton(onClick = toggleDarkMode) {
+                    IconButton(
+                        onClick = toggleDarkMode,
+                        modifier = Modifier
+                            .shadow(
+                                elevation = 8.dp,
+                                shape = CircleShape,
+                                ambientColor = if (isDarkMode) Color.White else Color.Black,
+                                spotColor = if (isDarkMode) Color.White else Color.Black
+                            )
+                            .background(MaterialTheme.colorScheme.surface, shape = CircleShape)
+                    ) {
                         Icon(
                             imageVector = if (isDarkMode) Icons.Default.Brightness7 else Icons.Default.Brightness2,
                             contentDescription = "Toggle Dark Mode",
                             tint = MaterialTheme.colorScheme.onSurface
                         )
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
             )
         },
         bottomBar = {
@@ -156,7 +168,7 @@ fun ProductCategories(navController: NavController, modifier: Modifier = Modifie
         Triple("Meat & Fish", R.drawable.meat_fish, Color(0xFFFFEBEE)),
         Triple("Bakery & Snacks", R.drawable.backery_snacks, Color(0xFFF3E5F5)),
         Triple("Dairy & Eggs", R.drawable.dairy_eggs, Color(0xFFFFFDE7)),
-        Triple("Beverages", R.drawable.beverages, Color(0xFFE3F2FD))  // Bebidas
+        Triple("Beverages", R.drawable.beverages, Color(0xFFE3F2FD)) // Bebidas
     )
 
     LazyVerticalGrid(
@@ -173,7 +185,7 @@ fun ProductCategories(navController: NavController, modifier: Modifier = Modifie
                 backgroundColor = backgroundColor,
                 onClick = {
                     if (name == "Beverages") {
-                        navController.navigate("beverages")  // Navegar a la pantalla de bebidas
+                        navController.navigate("beverages") // Navegar a la pantalla de bebidas
                     }
                 }
             )
@@ -186,7 +198,7 @@ fun CategoryItem(
     name: String,
     imageRes: Int,
     backgroundColor: Color,
-    onClick: () -> Unit  // Agregamos el parámetro onClick
+    onClick: () -> Unit // Agregamos el parámetro onClick
 ) {
     val borderColor = backgroundColor.copy(alpha = 0.5f)
 
@@ -197,7 +209,7 @@ fun CategoryItem(
             .clip(RoundedCornerShape(18.dp))
             .border(1.dp, borderColor, RoundedCornerShape(18.dp))
             .background(backgroundColor)
-            .clickable(onClick = onClick)  // Añadimos el onClick aquí
+            .clickable(onClick = onClick) // Añadimos el onClick aquí
     ) {
         Column(
             modifier = Modifier

@@ -74,7 +74,11 @@ class MainActivity : ComponentActivity() {
                             )
                         }
                         composable("register") {
-                            RegisterScreen(navController)
+                            RegisterScreen(
+                                navController,
+                                isDarkMode,
+                                { isDarkMode = !isDarkMode }
+                            )
                         }
                         composable("lastScreen") {
                             FifthScreen(

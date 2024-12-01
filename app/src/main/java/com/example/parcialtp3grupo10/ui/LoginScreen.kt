@@ -23,9 +23,11 @@ import retrofit2.Response
 import androidx.compose.ui.platform.LocalContext
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Brightness2
 import androidx.compose.material.icons.filled.Brightness7
+import androidx.compose.ui.draw.shadow
 import com.example.parcialtp3grupo10.client.LoginResponse
 import com.example.parcialtp3grupo10.client.RetrofitInstance
 import androidx.compose.ui.tooling.preview.Preview
@@ -70,12 +72,22 @@ fun LoginScreen(navController: NavHostController, isDarkMode: Boolean, toggleDar
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.Start
         ) {
-            // Botón de alternancia de modo oscuro
-            IconButton(onClick = toggleDarkMode, modifier = Modifier.align(Alignment.End)) {
+            IconButton(
+                onClick = toggleDarkMode,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = CircleShape,
+                        ambientColor = if (isDarkMode) Color.White else Color.Black,
+                        spotColor = if (isDarkMode) Color.White else Color.Black
+                    )
+                    .background(MaterialTheme.colorScheme.surface, shape = CircleShape)
+            ) {
                 Icon(
                     imageVector = if (isDarkMode) Icons.Default.Brightness7 else Icons.Default.Brightness2,
                     contentDescription = "Toggle Dark Mode",
-                    tint = MaterialTheme.colorScheme.onBackground
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
 

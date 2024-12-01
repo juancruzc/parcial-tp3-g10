@@ -25,9 +25,11 @@ import com.google.firebase.ktx.Firebase
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Brightness2
 import androidx.compose.material.icons.filled.Brightness7
+import androidx.compose.ui.draw.shadow
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,11 +86,22 @@ fun FifthScreen(navController: NavHostController, isDarkMode: Boolean, toggleDar
         ) {
             Spacer(modifier = Modifier.height(90.dp))
 
-            IconButton(onClick = toggleDarkMode) {
+            IconButton(
+                onClick = toggleDarkMode,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = CircleShape,
+                        ambientColor = if (isDarkMode) Color.White else Color.Black,
+                        spotColor = if (isDarkMode) Color.White else Color.Black
+                    )
+                    .background(MaterialTheme.colorScheme.surface, shape = CircleShape)
+            ) {
                 Icon(
                     imageVector = if (isDarkMode) Icons.Default.Brightness7 else Icons.Default.Brightness2,
                     contentDescription = "Toggle Dark Mode",
-                    tint = MaterialTheme.colorScheme.onBackground
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
 

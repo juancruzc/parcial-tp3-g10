@@ -4,11 +4,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Brightness2
+import androidx.compose.material.icons.filled.Brightness7
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,8 +28,7 @@ import com.example.parcialtp3grupo10.ui.components.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(navController: NavHostController?) {
-    // Variables locales para los campos de entrada
+fun RegisterScreen(navController: NavHostController?, isDarkMode: Boolean, toggleDarkMode: () -> Unit) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -29,19 +36,38 @@ fun RegisterScreen(navController: NavHostController?) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
                 .padding(32.dp)
-                .verticalScroll(rememberScrollState()), // Asegúrate de que este modificador esté aquí
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.Start
         ) {
+            // Botón de alternancia de modo oscuro
+            IconButton(
+                onClick = toggleDarkMode,
+                modifier = Modifier
+                    .align(Alignment.End)
+                    .shadow(
+                        elevation = 8.dp,
+                        shape = CircleShape,
+                        ambientColor = if (isDarkMode) Color.White else Color.Black,
+                        spotColor = if (isDarkMode) Color.White else Color.Black
+                    )
+                    .background(MaterialTheme.colorScheme.surface, shape = CircleShape)
+            ) {
+                Icon(
+                    imageVector = if (isDarkMode) Icons.Default.Brightness7 else Icons.Default.Brightness2,
+                    contentDescription = "Toggle Dark Mode",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
 
-            // Imagen superior
+            Spacer(modifier = Modifier.height(16.dp))
+
             Image(
                 painter = painterResource(id = R.drawable.img_3),
                 contentDescription = null,
@@ -53,51 +79,45 @@ fun RegisterScreen(navController: NavHostController?) {
 
             Spacer(modifier = Modifier.height(116.dp))
 
-            // Componente de título y subtítulo
             TitleAndSubtitle()
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Campos de texto
             InputField(
                 label = "Username",
                 value = username,
-                onValueChange = { username = it }  // Actualización de estado
+                onValueChange = { username = it }
             )
             Spacer(modifier = Modifier.height(16.dp))
 
             InputField(
                 label = "Email",
                 value = email,
-                onValueChange = { email = it }  // Actualización de estado
+                onValueChange = { email = it }
             )
             Spacer(modifier = Modifier.height(16.dp))
 
             InputField(
                 label = "Password",
                 value = password,
-                onValueChange = { password = it },  // Actualización de estado
-                isPassword = true  // Para ocultar el texto de la contraseña
+                onValueChange = { password = it },
+                isPassword = true
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Texto de términos y condiciones
             TermsAndConditionsText()
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botón de "Sign Up"
             ButtonBar2(title = "Sign Up", onClick = { navController?.navigate("lastScreen") })
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            // Botón de retroceso para volver a la pantalla de inicio de sesión
             BackButtonBar(title = "Back to Login", navController = navController, destination = "login")
 
             Spacer(modifier = Modifier.weight(1f))
 
-            // Imagen inferior
             Image(
                 painter = painterResource(id = R.drawable.img_2),
                 contentDescription = null,
@@ -113,5 +133,5 @@ fun RegisterScreen(navController: NavHostController?) {
 @Preview(showBackground = true)
 @Composable
 fun RegisterScreenPreview() {
-    RegisterScreen(navController = rememberNavController())
+    RegisterScreen(navController = rememberNavController(), isDarkMode = false, toggleDarkMode = {})
 }

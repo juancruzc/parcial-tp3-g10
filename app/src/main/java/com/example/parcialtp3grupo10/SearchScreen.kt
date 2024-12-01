@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Brightness2
@@ -34,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.shadow
 import androidx.navigation.NavController
 import com.example.parcialtp3grupo10.model.Product
 import com.example.parcialtp3grupo10.ui.components.BottNavigationBar
@@ -72,7 +74,17 @@ fun SearchScreen(navController: NavController?, toggleDarkMode: () -> Unit, isDa
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
                 actions = {
-                    IconButton(onClick = toggleDarkMode) {
+                    IconButton(
+                        onClick = toggleDarkMode,
+                        modifier = Modifier
+                            .shadow(
+                                elevation = 8.dp,
+                                shape = CircleShape,
+                                ambientColor = if (isDarkMode) Color.White else Color.Black,
+                                spotColor = if (isDarkMode) Color.White else Color.Black
+                            )
+                            .background(MaterialTheme.colorScheme.surface, shape = CircleShape)
+                    ) {
                         Icon(
                             imageVector = if (isDarkMode) Icons.Default.Brightness7 else Icons.Default.Brightness2,
                             contentDescription = "Toggle Dark Mode",
