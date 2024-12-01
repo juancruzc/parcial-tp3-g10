@@ -3,6 +3,7 @@ package com.example.parcialtp3grupo10.ui
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,11 +23,16 @@ import com.example.parcialtp3grupo10.ui.components.BottomCenteredImage
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Brightness2
+import androidx.compose.material.icons.filled.Brightness7
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FifthScreen(navController: NavHostController) {
+fun FifthScreen(navController: NavHostController, isDarkMode: Boolean, toggleDarkMode: () -> Unit) {
     var expandedPaises by remember { mutableStateOf(false) }
     var expandedProvincias by remember { mutableStateOf(false) }
     var nombresPaises by remember { mutableStateOf(listOf<String>()) }
@@ -35,89 +41,87 @@ fun FifthScreen(navController: NavHostController) {
     var provinciaSeleccionada by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(true) }
 
-    // Cargar países desde Firebase
     LaunchedEffect(Unit) {
-        try {
-            val db = Firebase.firestore
-            db.collection("Paises")
-                .get()
-                .addOnSuccessListener { documentos ->
-                    nombresPaises = documentos.documents.map { it.id }
-                    if (nombresPaises.isNotEmpty()) {
-                        paisSeleccionado = nombresPaises[0]
-                    }
-                    isLoading = false
-                    Log.d("Firebase", "Países cargados: $nombresPaises")
+        val db = Firebase.firestore
+        db.collection("Paises")
+            .get()
+            .addOnSuccessListener { documentos ->
+                nombresPaises = documentos.documents.map { it.id }
+                if (nombresPaises.isNotEmpty()) {
+                    paisSeleccionado = nombresPaises[0]
                 }
-                .addOnFailureListener { e ->
-                    Log.e("Firebase", "Error al cargar países", e)
-                    isLoading = false
-                }
-        } catch (e: Exception) {
-            Log.e("Firebase", "Error", e)
-            isLoading = false
-        }
+                isLoading = false
+            }
     }
 
-    // Cargar provincias cuando se selecciona un país
     LaunchedEffect(paisSeleccionado) {
         if (paisSeleccionado.isNotEmpty()) {
-            try {
-                val db = Firebase.firestore
-                db.collection("Paises")
-                    .document(paisSeleccionado)
-                    .collection("provincias")
-                    .get()
-                    .addOnSuccessListener { documentos ->
-                        provincias = documentos.documents.map { it.id }
-                        if (provincias.isNotEmpty()) {
-                            provinciaSeleccionada = provincias[0]
-                        }
-                        Log.d("Firebase", "Provincias cargadas para $paisSeleccionado: $provincias")
+            val db = Firebase.firestore
+            db.collection("Paises").document(paisSeleccionado).collection("provincias")
+                .get()
+                .addOnSuccessListener { documentos ->
+                    provincias = documentos.documents.map { it.id }
+                    if (provincias.isNotEmpty()) {
+                        provinciaSeleccionada = provincias[0]
                     }
-                    .addOnFailureListener { e ->
-                        Log.e("Firebase", "Error al cargar provincias", e)
-                    }
-            } catch (e: Exception) {
-                Log.e("Firebase", "Error", e)
-            }
+                }
         }
     }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(MaterialTheme.colorScheme.background)
     ) {
         TopLeftImage()
 
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+                .fillMaxSize()
+                .padding(horizontal = 32.dp)
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TopFullWidthImage()
+            Spacer(modifier = Modifier.height(90.dp))
+
+            IconButton(onClick = toggleDarkMode) {
+                Icon(
+                    imageVector = if (isDarkMode) Icons.Default.Brightness7 else Icons.Default.Brightness2,
+                    contentDescription = "Toggle Dark Mode",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            TopFullWidthImage(
+                modifier = Modifier
+                    .height(250.dp)
+                    .fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = "Select Your Location",
-                fontSize = 30.sp,
+                fontSize = 24.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
                 text = "Switch on your location to stay in tune with what's happening in your area.",
-                fontSize = 16.sp,
-                color = Color.Gray,
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(30.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             if (isLoading) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(color = MaterialTheme.colorScheme.primary)
             } else {
                 // Dropdown de Países
                 ExposedDropdownMenuBox(
@@ -133,13 +137,12 @@ fun FifthScreen(navController: NavHostController) {
                             .menuAnchor()
                             .fillMaxWidth(),
                         colors = TextFieldDefaults.colors(
-                            focusedContainerColor = Color.White,
-                            unfocusedContainerColor = Color.White,
-                            disabledContainerColor = Color.Transparent,
-                            focusedIndicatorColor = Color.Gray,
-                            unfocusedIndicatorColor = Color.LightGray
+                            focusedContainerColor = MaterialTheme.colorScheme.surface,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                            focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                            unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                         ),
-                        label = { Text("Select your country") }
+                        label = { Text("Select your country", color = MaterialTheme.colorScheme.onSurface) }
                     )
 
                     ExposedDropdownMenu(
@@ -148,17 +151,18 @@ fun FifthScreen(navController: NavHostController) {
                     ) {
                         nombresPaises.forEach { pais ->
                             DropdownMenuItem(
-                                text = { Text(text = pais) },
+                                text = { Text(text = pais, color = MaterialTheme.colorScheme.onSurface) },
                                 onClick = {
                                     paisSeleccionado = pais
                                     expandedPaises = false
                                     provinciaSeleccionada = ""
-                                    Log.d("Firebase", "País seleccionado: $pais")
                                 }
                             )
                         }
                     }
                 }
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 // Dropdown de Provincias
                 if (paisSeleccionado.isNotEmpty()) {
@@ -175,13 +179,12 @@ fun FifthScreen(navController: NavHostController) {
                                 .menuAnchor()
                                 .fillMaxWidth(),
                             colors = TextFieldDefaults.colors(
-                                focusedContainerColor = Color.White,
-                                unfocusedContainerColor = Color.White,
-                                disabledContainerColor = Color.Transparent,
-                                focusedIndicatorColor = Color.Gray,
-                                unfocusedIndicatorColor = Color.LightGray
+                                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                                focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f)
                             ),
-                            label = { Text("Select your province") }
+                            label = { Text("Select your province", color = MaterialTheme.colorScheme.onSurface) }
                         )
 
                         ExposedDropdownMenu(
@@ -190,11 +193,10 @@ fun FifthScreen(navController: NavHostController) {
                         ) {
                             provincias.forEach { provincia ->
                                 DropdownMenuItem(
-                                    text = { Text(text = provincia) },
+                                    text = { Text(text = provincia, color = MaterialTheme.colorScheme.onSurface) },
                                     onClick = {
                                         provinciaSeleccionada = provincia
                                         expandedProvincias = false
-                                        Log.d("Firebase", "Provincia seleccionada: $provincia")
                                     }
                                 )
                             }
@@ -203,22 +205,27 @@ fun FifthScreen(navController: NavHostController) {
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-            ButtonBar2(
-                title = "Submit",
-                onClick = {
-                    if (paisSeleccionado.isNotEmpty() && provinciaSeleccionada.isNotEmpty()) {
-                        navController.navigate("home")
+            Box(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                ButtonBar2(
+                    title = "Submit",
+                    onClick = {
+                        if (paisSeleccionado.isNotEmpty() && provinciaSeleccionada.isNotEmpty()) {
+                            navController.navigate("home")
+                        }
                     }
-                }
-            )
+                )
+            }
         }
 
         BottomCenteredImage(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
-                .height(50.dp)
+                .height(16.dp)
+                .fillMaxWidth(0.2f)
         )
     }
 }
@@ -226,5 +233,9 @@ fun FifthScreen(navController: NavHostController) {
 @Preview(showBackground = true)
 @Composable
 fun FifthScreenPreview() {
-    FifthScreen(navController = NavHostController(context = LocalContext.current))
+    FifthScreen(
+        navController = NavHostController(context = LocalContext.current),
+        isDarkMode = false,
+        toggleDarkMode = {}
+    )
 }

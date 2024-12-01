@@ -23,13 +23,16 @@ import retrofit2.Response
 import androidx.compose.ui.platform.LocalContext
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Brightness2
+import androidx.compose.material.icons.filled.Brightness7
 import com.example.parcialtp3grupo10.client.LoginResponse
 import com.example.parcialtp3grupo10.client.RetrofitInstance
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(navController: NavHostController, isDarkMode: Boolean, toggleDarkMode: () -> Unit) {
     var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -58,7 +61,7 @@ fun LoginScreen(navController: NavHostController) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -67,6 +70,17 @@ fun LoginScreen(navController: NavHostController) {
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.Start
         ) {
+            // Botón de alternancia de modo oscuro
+            IconButton(onClick = toggleDarkMode, modifier = Modifier.align(Alignment.End)) {
+                Icon(
+                    imageVector = if (isDarkMode) Icons.Default.Brightness7 else Icons.Default.Brightness2,
+                    contentDescription = "Toggle Dark Mode",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
+            }
+
+            Spacer(modifier = Modifier.height(16.dp))
+
             // Imagen centrada horizontalmente
             Image(
                 painter = painterResource(id = R.drawable.img_3),
@@ -83,13 +97,14 @@ fun LoginScreen(navController: NavHostController) {
                 text = "Sign In",
                 fontSize = 30.sp,
                 fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             Text(
                 text = "Enter your username and password",
                 fontSize = 16.sp,
-                color = Color.Gray,
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                 modifier = Modifier.padding(bottom = 24.dp)
             )
 
@@ -102,8 +117,8 @@ fun LoginScreen(navController: NavHostController) {
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
-                    focusedTextColor = Color.Black,
-                    unfocusedTextColor = Color.Black
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground
                 )
             )
 
@@ -119,8 +134,8 @@ fun LoginScreen(navController: NavHostController) {
                 colors = TextFieldDefaults.colors(
                     focusedContainerColor = Color.Transparent,
                     unfocusedContainerColor = Color.Transparent,
-                    focusedTextColor = Color.Black,
-                    unfocusedTextColor = Color.Black
+                    focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                    unfocusedTextColor = MaterialTheme.colorScheme.onBackground
                 )
             )
 
@@ -139,15 +154,15 @@ fun LoginScreen(navController: NavHostController) {
             ) {
                 Text(
                     text = "Don’t have an account? ",
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
                     fontSize = 16.sp
                 )
                 Text(
                     text = "Signup",
-                    color = Color(0xFF53B175), // Color verde
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 16.sp,
                     modifier = Modifier.clickable {
-                        navController.navigate("register") // Navega a la pantalla de registro
+                        navController.navigate("register")
                     }
                 )
             }
@@ -162,14 +177,14 @@ fun LoginScreen(navController: NavHostController) {
             ) {
                 Text(
                     text = "Don't have an account? ",
-                    color = Color.Black,
+                    color = MaterialTheme.colorScheme.onBackground,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
                     text = "Register",
-                    color = Color(0xFF53B175),
+                    color = MaterialTheme.colorScheme.primary,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.clickable {
@@ -185,7 +200,9 @@ fun LoginScreen(navController: NavHostController) {
 @Composable
 fun LoginScreenPreview() {
     val navController = rememberNavController()
-    LoginScreen(navController = navController)
+    LoginScreen(
+        navController = navController,
+        isDarkMode = false,
+        toggleDarkMode = {}
+    )
 }
-
-

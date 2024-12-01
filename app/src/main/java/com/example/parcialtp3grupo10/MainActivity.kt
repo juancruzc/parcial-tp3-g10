@@ -43,7 +43,6 @@ class MainActivity : ComponentActivity() {
             }
         } catch (e: Exception) {
             Log.e("Firebase", "Error initializing Firebase: ${e.message}")
-            e.printStackTrace()
         }
 
         setContent {
@@ -68,13 +67,21 @@ class MainActivity : ComponentActivity() {
                             SecondScreen(navController)
                         }
                         composable("login") {
-                            LoginScreen(navController)
+                            LoginScreen(
+                                navController,
+                                isDarkMode,
+                                { isDarkMode = !isDarkMode }
+                            )
                         }
                         composable("register") {
                             RegisterScreen(navController)
                         }
                         composable("lastScreen") {
-                            FifthScreen(navController)
+                            FifthScreen(
+                                navController,
+                                isDarkMode,
+                                { isDarkMode = !isDarkMode }
+                            )
                         }
                         composable("home") {
                             HomeScreen(navController, { isDarkMode = !isDarkMode }, isDarkMode)
