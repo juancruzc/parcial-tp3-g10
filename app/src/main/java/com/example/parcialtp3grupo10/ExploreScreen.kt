@@ -34,37 +34,60 @@ import androidx.navigation.NavController
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FindProductsScreen(navController: NavController) {
+fun FindProductsScreen(navController: NavController, toggleDarkMode: () -> Unit, isDarkMode: Boolean) {
     var showFilters by remember { mutableStateOf(false) }
+
+    val currentRoute = navController.currentBackStackEntry?.destination?.route ?: "explore"
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
-                    Column(
+                    Box(
                         modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                        contentAlignment = Alignment.Center
                     ) {
-                        Header("Find Products")
+                        Text("Find Products", color = MaterialTheme.colorScheme.onSurface)
                     }
                 },
+                navigationIcon = {
+                    IconButton(onClick = { /* Acción del menú */ }) {
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = "Menu",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                actions = {
+                    IconButton(onClick = toggleDarkMode) {
+                        Icon(
+                            imageVector = if (isDarkMode) Icons.Default.Brightness7 else Icons.Default.Brightness2,
+                            contentDescription = "Toggle Dark Mode",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
             )
         },
         bottomBar = {
-            BottNavigationBar(navController) // Pasar el navController aquí
+            BottNavigationBar(navController, isDarkMode, currentRoute)
         }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) {
             SearchBar(onFilterClick = { showFilters = true })
-            ProductCategories(navController) // Si necesitas navController aquí
+            ProductCategories(navController)
         }
 
-        if (showFilters && navController != null) {
+        if (showFilters) {
             FilterBottomSheet(
                 isOpen = showFilters,
                 onDismiss = { showFilters = false },

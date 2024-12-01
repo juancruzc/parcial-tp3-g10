@@ -5,6 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Brightness2
+import androidx.compose.material.icons.filled.Brightness7
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -24,18 +28,25 @@ import com.example.parcialtp3grupo10.ui.components.CheckoutCard
 import com.example.parcialtp3grupo10.viewmodel.CartViewModel
 import com.example.parcialtp3grupo10.viewmodel.OrderState
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CartScreen(modifier: Modifier = Modifier, navController: NavController? = null) {
+fun CartScreen(
+    navController: NavController?,
+    toggleDarkMode: () -> Unit,
+    isDarkMode: Boolean,
+    modifier: Modifier = Modifier
+) {
     val viewModel: CartViewModel = viewModel()
     val cartState by viewModel.cartState.collectAsState()
     val orderState by viewModel.orderState.collectAsState()
     var showOverlay by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
+    val currentRoute = navController?.currentBackStackEntry?.destination?.route ?: "cart"
+
     LaunchedEffect(Unit) {
         viewModel.loadSampleProducts(context)
     }
-
 
     LaunchedEffect(orderState) {
         when (orderState) {
@@ -52,12 +63,44 @@ fun CartScreen(modifier: Modifier = Modifier, navController: NavController? = nu
 
     Scaffold(
         topBar = {
-            Header("Mi Carrito")
-            HorizontalDivider(color = Color(0xFFB3B3B3), thickness = 1.dp)
+            TopAppBar(
+                title = {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Mi Carrito", color = MaterialTheme.colorScheme.onSurface)
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = { /* Accion aquí si es necesario */ }) {
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = "Menu",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                actions = {
+                    IconButton(onClick = toggleDarkMode) {
+                        Icon(
+                            imageVector = if (isDarkMode)
+                                Icons.Default.Brightness7
+                            else
+                                Icons.Default.Brightness2,
+                            contentDescription = "Toggle Dark Mode",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+            )
         },
         bottomBar = {
             if (navController != null) {
-                BottNavigationBar(navController)
+                BottNavigationBar(navController, isDarkMode, currentRoute)
             }
         }
     ) { innerPadding ->
@@ -69,7 +112,7 @@ fun CartScreen(modifier: Modifier = Modifier, navController: NavController? = nu
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color.White),
+                    .background(MaterialTheme.colorScheme.background),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 LazyColumn(
@@ -104,7 +147,6 @@ fun CartScreen(modifier: Modifier = Modifier, navController: NavController? = nu
                     }
                 )
             }
-
 
             if (showOverlay) {
                 Box(
