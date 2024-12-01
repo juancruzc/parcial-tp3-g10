@@ -12,13 +12,18 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Brightness2
+import androidx.compose.material.icons.filled.Brightness7
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -37,7 +42,7 @@ import com.example.parcialtp3grupo10.ui.components.ProductCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreen(navController: NavController? = null) {
+fun SearchScreen(navController: NavController?, toggleDarkMode: () -> Unit, isDarkMode: Boolean) {
     var searchQuery by remember { mutableStateOf("") }
     val filteredProducts = remember(searchQuery) {
         if (searchQuery.isEmpty()) {
@@ -50,6 +55,8 @@ fun SearchScreen(navController: NavController? = null) {
         }
     }
 
+    val currentRoute = navController?.currentBackStackEntry?.destination?.route ?: "search"
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -61,18 +68,30 @@ fun SearchScreen(navController: NavController? = null) {
                         Header("Search")
                     }
                 },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                actions = {
+                    IconButton(onClick = toggleDarkMode) {
+                        Icon(
+                            imageVector = if (isDarkMode) Icons.Default.Brightness7 else Icons.Default.Brightness2,
+                            contentDescription = "Toggle Dark Mode",
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                }
             )
         },
         bottomBar = {
             if (navController != null) {
-                BottNavigationBar(navController)
+                BottNavigationBar(navController, isDarkMode, currentRoute)
             }
         }
     ) { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(innerPadding)
         ) {
             SearchBar(

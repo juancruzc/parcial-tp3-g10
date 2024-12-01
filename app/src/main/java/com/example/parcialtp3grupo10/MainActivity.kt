@@ -25,6 +25,10 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.initialize
 import android.util.Log
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,7 +47,9 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            ParcialTP3Grupo10Theme {
+            var isDarkMode by remember { mutableStateOf(false) } // Estado del modo oscuro
+
+            ParcialTP3Grupo10Theme(darkTheme = isDarkMode) { // Usar el estado del modo oscuro
                 val navController: NavHostController = rememberNavController()
 
                 Surface(
@@ -71,19 +77,19 @@ class MainActivity : ComponentActivity() {
                             FifthScreen(navController)
                         }
                         composable("home") {
-                            HomeScreen(navController)
+                            HomeScreen(navController, { isDarkMode = !isDarkMode }, isDarkMode)
                         }
                         composable("explore") {
-                            FindProductsScreen(navController)
+                            FindProductsScreen(navController, { isDarkMode = !isDarkMode }, isDarkMode)
                         }
                         composable("cart") {
-                            CartScreen(Modifier, navController)
+                            CartScreen(navController, { isDarkMode = !isDarkMode }, isDarkMode)
                         }
                         composable("favourites") {
-                            FavoritesScreen(navController)
+                            FavoritesScreen(navController, { isDarkMode = !isDarkMode }, isDarkMode)
                         }
                         composable("account") {
-                            AccountScreen(navController)
+                            AccountScreen(navController, { isDarkMode = !isDarkMode }, isDarkMode)
                         }
                         composable("beverages") {
                             BeverageScreen(navController = navController)
@@ -92,7 +98,7 @@ class MainActivity : ComponentActivity() {
                             SuccessScreen(navController)
                         }
                         composable("search") {
-                            SearchScreen(navController)
+                            SearchScreen(navController, { isDarkMode = !isDarkMode }, isDarkMode)
                         }
                     }
                 }

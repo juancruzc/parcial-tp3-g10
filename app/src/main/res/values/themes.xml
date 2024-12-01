@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.ParcialTP3Grupo10" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary_light</item>
+        <item name="colorOnPrimary">@color/on_primary_light</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
 
-    <style name="Theme.ParcialTP3Grupo10" parent="android:Theme.Material.Light.NoActionBar" />
+        <item name="colorSurface">@color/primary_dark</item>
+        <item name="colorOnSurface">@color/on_primary_dark</item>
+
+    </style>
 </resources>

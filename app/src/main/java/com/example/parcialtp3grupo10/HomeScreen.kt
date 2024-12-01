@@ -15,14 +15,21 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Brightness2
+import androidx.compose.material.icons.filled.Brightness7
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,138 +48,164 @@ import com.example.parcialtp3grupo10.ui.components.ProductCard
 
 @Composable
 @OptIn(ExperimentalMaterial3Api::class)
-fun HomeScreen(navController: NavController? = null) {
-    Scaffold (
+fun HomeScreen(
+    navController: NavController?,
+    toggleDarkMode: () -> Unit,
+    isDarkMode: Boolean
+) {
+    val currentRoute = navController?.currentBackStackEntry?.destination?.route ?: "home"
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Box(
+                        modifier = Modifier.fillMaxWidth(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text("Shop", color = MaterialTheme.colorScheme.onSurface)
+                    }
+                },
+                navigationIcon = {
+                    IconButton(onClick = { /* Podrías agregar una acción aquí */ }) {
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = "Menu",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                ),
+                actions = {
+                    IconButton(onClick = toggleDarkMode) {
+                        Icon(
+                            imageVector = if (isDarkMode) Icons.Default.Brightness7 else Icons.Default.Brightness2,
+                            contentDescription = "Toggle Dark Mode",
+                            tint = MaterialTheme.colorScheme.onSurface
+                        )
+                    }
+                }
+            )
+        },
         bottomBar = {
             if (navController != null) {
-                BottNavigationBar(navController)
+                BottNavigationBar(navController, isDarkMode, currentRoute)
             }
         }
     ) { innerPadding ->
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .padding(innerPadding),
-    ) {
-        TopAppBar(
-            title = {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Header("Shop")
-
-                }
-            },
-        )
-        Text(
-            text = "Buenos Aires",
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color(0xFF4C4F4D),
-            fontSize = 18.sp,
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-        LazyColumn(
+        Column(
             modifier = Modifier
-                .fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp)
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
+                .padding(innerPadding),
         ) {
-            item {
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(120.dp)
-                        .padding(bottom = 16.dp),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    Box(
+            Text(
+                text = "Buenos Aires",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground,
+                fontSize = 18.sp,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp)
+            ) {
+                item {
+                    Card(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color(0xFFF5F5F5))
+                            .fillMaxWidth()
+                            .height(120.dp)
+                            .padding(bottom = 16.dp),
+                        shape = RoundedCornerShape(12.dp)
                     ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.banner),
-                            contentDescription = "Product Image",
+                        Box(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .fillMaxSize(),
-                            contentScale = ContentScale.Crop,
-                            alpha = 1f
-                        )
+                                .fillMaxSize()
+                                .background(MaterialTheme.colorScheme.surface)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.banner),
+                                contentDescription = "Product Image",
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxSize(),
+                                contentScale = ContentScale.Crop,
+                                alpha = 1f
+                            )
+                        }
                     }
                 }
-            }
-
-            item {
-                SectionHeader(
-                    title = "Exclusive Offer",
-                    onSeeAllClick = { /* Handle see all */ }
+                item {
+                    SectionHeader(
+                        title = "Exclusive Offer",
+                        onSeeAllClick = { /* Handle see all */ }
+                    )
+                }
+                val productsOne = listOf(
+                    Product("Organic Bananas", "7pcs, Priceg", 4.99, R.drawable.banana, 1),
+                    Product("Red Apple", "1kg, Priceg", 4.99, R.drawable.apple, 1),
+                    Product(
+                        "Ginger",
+                        "250g, Priceg",
+                        4.99,
+                        R.drawable.ginger,
+                        1
+                    )
                 )
-            }
-            val productsOne = listOf(
-                Product("Organic Bananas", "7pcs, Priceg", 4.99, R.drawable.banana,1),
-                Product("Red Apple", "1kg, Priceg", 4.99, R.drawable.apple,1),
-                Product(
-                    "Ginger",
-                    "250g, Priceg",
-                    4.99,
-                    R.drawable.ginger,
-                    1
-                )
-            )
-            item {
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(productsOne) { product ->
-                        val imagePainter = painterResource(id = product.imageRes)
-                        ProductCard(
-                            productName = product.name,
-                            description = product.description,
-                            price = product.price,
-                            imagePainter,
-                            onAddClick = { }
-                        )
+                item {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        items(productsOne) { product ->
+                            val imagePainter = painterResource(id = product.imageRes)
+                            ProductCard(
+                                productName = product.name,
+                                description = product.description,
+                                price = product.price,
+                                imagePainter,
+                                onAddClick = { }
+                            )
+                        }
                     }
                 }
-            }
-            item {
-                SectionHeader(
-                    title = "Best Selling",
-                    onSeeAllClick = {  }
-                )
-            }
+                item {
+                    SectionHeader(
+                        title = "Best Selling",
+                        onSeeAllClick = { }
+                    )
+                }
 
-            val productsTwo = listOf(
-                Product("Bell Pepper Red", "1kg, Priceg", 4.99, R.drawable.pepper,1),
-                Product("Ginger", "250g, Priceg", 4.99, R.drawable.ginger,1),
-                Product(
-                    "Ginger",
-                    "250g, Priceg",
-                    4.99,
-                    R.drawable.ginger,
-                    1
+                val productsTwo = listOf(
+                    Product("Bell Pepper Red", "1kg, Priceg", 4.99, R.drawable.pepper, 1),
+                    Product("Ginger", "250g, Priceg", 4.99, R.drawable.ginger, 1),
+                    Product(
+                        "Ginger",
+                        "250g, Priceg",
+                        4.99,
+                        R.drawable.ginger,
+                        1
+                    )
                 )
-            )
-            item {
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(16.dp)
-                ) {
-                    items(productsTwo) { product ->
-                        val imagePainter = painterResource(id = product.imageRes)
-                        ProductCard(
-                            productName = product.name,
-                            description = product.description,
-                            price = product.price,
-                            imagePainter,
-                            onAddClick = { /* Handle add */ }
-                        )
+                item {
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(16.dp)
+                    ) {
+                        items(productsTwo) { product ->
+                            val imagePainter = painterResource(id = product.imageRes)
+                            ProductCard(
+                                productName = product.name,
+                                description = product.description,
+                                price = product.price,
+                                imagePainter,
+                                onAddClick = { /* Handle add */ }
+                            )
+                        }
                     }
                 }
             }
         }
-    }
     }
 }
 
@@ -196,16 +229,17 @@ private fun SectionHeader(
         TextButton(onClick = onSeeAllClick) {
             Text(
                 text = "See all",
-                color = Color(0xFF4CAF50)
+                color = MaterialTheme.colorScheme.primary
             )
         }
     }
 }
 
+
 @Preview
 @Composable
 fun PreviewHomeScreen() {
     MaterialTheme {
-        HomeScreen()
+        HomeScreen(navController = null, toggleDarkMode = {}, isDarkMode = false)
     }
 }
