@@ -51,7 +51,7 @@ fun CheckoutCard(
         modifier = Modifier
             .wrapContentSize()
             .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape = RoundedCornerShape(16.dp),
     ) {
         Column(
@@ -68,24 +68,26 @@ fun CheckoutCard(
                     text = "Checkout",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
                 IconButton(onClick = onClick) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Close"
+                        contentDescription = "Close",
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-            HorizontalDivider(color = Color(0xFFB3B3B3), thickness = 2.dp)
+            HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f), thickness = 2.dp)
 
             CheckoutRow(
                 label = "Delivery",
                 rightText = "Select Method"
             )
 
-            Divider()
+            Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
 
             CheckoutRowWithIcon(
                 label = "Payment",
@@ -93,40 +95,39 @@ fun CheckoutCard(
                 iconDescription = "Payment Method"
             )
 
-            Divider()
+            Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
 
             CheckoutRow(
                 label = "Promo Code",
                 rightText = "Pick discount"
             )
 
-            Divider()
+            Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
 
             CheckoutRow(
                 label = "Total Cost",
                 rightText = price.toString()
             )
 
-            Divider()
+            Divider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f))
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
                 text = "By placing an order you agree to our",
                 style = MaterialTheme.typography.bodySmall,
-                color = Color.Gray
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
             )
             Text(
                 text = "Terms And Conditions",
                 style = MaterialTheme.typography.bodySmall,
-                color = Color.Black,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold
             )
 
             if (navController != null) {
                 CheckButtonBar("Place Order", navController)
             }
-
         }
     }
 }
@@ -140,7 +141,7 @@ fun CheckButtonBar(title: String, navController: NavController) {
             .height(95.dp)
             .padding(16.dp),
         shape = RoundedCornerShape(12.dp),
-        colors = ButtonDefaults.buttonColors(Color(0xFF53B175))
+        colors = ButtonDefaults.buttonColors(Color(0xFF53B175)) // Establecer el color a verde
     ) {
         Text(title, color = Color.White, fontSize = 20.sp)
     }
@@ -158,7 +159,7 @@ fun CheckoutRow(label: String, rightText: String) {
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge,
-            color = Color.Gray
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
         )
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -166,12 +167,13 @@ fun CheckoutRow(label: String, rightText: String) {
             Text(
                 text = rightText,
                 style = MaterialTheme.typography.bodyLarge,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onBackground
             )
             Spacer(modifier = Modifier.width(8.dp))
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = "Arrow",
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.size(16.dp)
             )
         }
@@ -190,7 +192,7 @@ fun CheckoutRowWithIcon(label: String, painter: Painter, iconDescription: String
         Text(
             text = label,
             style = MaterialTheme.typography.bodyLarge,
-            color = Color.Gray
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
         )
         Row(
             verticalAlignment = Alignment.CenterVertically
@@ -204,6 +206,7 @@ fun CheckoutRowWithIcon(label: String, painter: Painter, iconDescription: String
             Icon(
                 imageVector = Icons.Default.KeyboardArrowRight,
                 contentDescription = "Arrow",
+                tint = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier.size(16.dp)
             )
         }

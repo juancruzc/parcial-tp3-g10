@@ -35,6 +35,11 @@ import androidx.compose.ui.unit.dp
 import com.example.parcialtp3grupo10.R
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.draw.shadow
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.graphics.Brush
 
 @SuppressLint("DefaultLocale")
 @Composable
@@ -48,13 +53,21 @@ fun CartCard(
     onRemove: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val isDarkMode = isSystemInDarkTheme()
+
     var quantity by remember { mutableStateOf(1) }
 
     Card(
         modifier = modifier
             .width(460.dp)
-            .height(100.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
+            .height(100.dp)
+            .shadow(
+                elevation = 8.dp,
+                shape = MaterialTheme.shapes.medium,
+                ambientColor = if (isDarkMode) Color(0x99FFFFFF) else Color.Black,
+                spotColor = if (isDarkMode) Color(0x99FFFFFF) else Color.Black
+            ),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
     ) {
         Row(
             modifier = Modifier
@@ -81,13 +94,14 @@ fun CartCard(
                 Text(
                     text = productName,
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
 
                 Text(
                     text = description,
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f),
                     modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
                 )
 
@@ -98,15 +112,17 @@ fun CartCard(
                         .padding(start = 12.dp),
                 ) {
                     IconButton(
-                        onClick = { if (quantity > 1) {
-                            quantity--
-                            onDecrease()
-                        } },
+                        onClick = {
+                            if (quantity > 1) {
+                                quantity--
+                                onDecrease()
+                            }
+                        },
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.minus),
-                            contentDescription = "Add to cart",
-                            tint = Color(0xFFB3B3B3),
+                            contentDescription = "Decrease quantity",
+                            tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                             modifier = Modifier
                                 .size(40.dp)
                         )
@@ -115,7 +131,8 @@ fun CartCard(
                     Text(
                         text = quantity.toString(),
                         style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSurface
                     )
 
                     IconButton(
@@ -123,7 +140,7 @@ fun CartCard(
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.plus),
-                            contentDescription = "Add to cart",
+                            contentDescription = "Increase quantity",
                             tint = Color(0xFF53B175),
                             modifier = Modifier
                                 .size(40.dp)
@@ -135,14 +152,14 @@ fun CartCard(
             Column(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.spacedBy(10.dp)
-            ){
+            ) {
                 IconButton(
                     onClick = onRemove
                 ) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Remove form cart",
-                        tint = Color(0xFFB3B3B3),
+                        contentDescription = "Remove from cart",
+                        tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
                         modifier = Modifier
                             .size(18.dp)
                     )
@@ -151,11 +168,12 @@ fun CartCard(
                 Text(
                     text = "$${String.format("%.2f", price)}",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
                 )
             }
         }
-        HorizontalDivider(color = Color(0xFFB3B3B3), thickness = 2.dp)
+        HorizontalDivider(color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f), thickness = 2.dp)
     }
 }
 

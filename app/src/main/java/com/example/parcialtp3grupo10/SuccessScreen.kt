@@ -14,6 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.parcialtp3grupo10.ui.components.BackButtonBar
@@ -24,7 +25,7 @@ fun SuccessScreen(navController: NavController? = null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
@@ -42,19 +43,18 @@ fun SuccessScreen(navController: NavController? = null) {
             text = "Your Order has been accepted",
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp,
-            color = Color.Black
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            text = "Your items have been placed and is on it's way to being processed",
+            text = "Your items have been placed and is on its way to being processed",
             fontSize = 16.sp,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f),
             modifier = Modifier.padding(horizontal = 24.dp),
-            textAlign = androidx.compose.ui.text.style.TextAlign.Center
+            textAlign = TextAlign.Center
         )
-
     }
 
     Column(
@@ -63,9 +63,9 @@ fun SuccessScreen(navController: NavController? = null) {
             .padding(10.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
-    ){
+    ) {
         ButtonBar("Track Order")
-        BackButtonBar("Back to home", navController, destination="home")
+        BackButtonBar("Back to home", navController, destination = "home")
     }
 }
 
